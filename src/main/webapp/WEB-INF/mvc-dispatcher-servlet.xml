@@ -1,0 +1,67 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd">
+
+  <mvc:annotation-driven/>
+  <context:component-scan base-package="cz.cvut.fit.vmw.slamasimon.flickr"/>
+  <context:property-placeholder location="classpath:properties.properties"/>
+  <mvc:resources mapping="/resources/**" location="/resources/" />
+
+  <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    <property name="prefix" value="/WEB-INF/pages/"/>
+    <property name="suffix" value=".jsp"/>
+  </bean>
+
+  <bean id="flickrRest" class="com.flickr4java.flickr.REST"/>
+
+  <bean id="flickr" class="com.flickr4java.flickr.Flickr">
+    <constructor-arg name="apiKey" value="${cz.vmw.flickr.api.apikey}"/>
+    <constructor-arg name="sharedSecret" value="${cz.vmw.flickr.api.sharekey}"/>
+    <constructor-arg name="transport" ref="flickrRest"/>
+  </bean>
+
+  <bean id="extrasList" class="java.util.LinkedHashSet">
+    <constructor-arg>
+      <set>
+        <value>geo</value>
+        <value>views</value>
+        <value>description</value>
+        <value>date_taken</value>
+      </set>
+    </constructor-arg>
+  </bean>
+
+  <bean id="searchParameters" class="com.flickr4java.flickr.photos.SearchParameters">
+    <property name="sort" value="6"/>
+    <property name="extras" ref="extrasList"/>
+  </bean>
+
+  <bean id="flickrApi" class="cz.cvut.fit.vmw.slamasimon.flickr.service.FlickrService">
+    <constructor-arg name="flickr" ref="flickr"/>
+    <constructor-arg name="searchParameters" ref="searchParameters"/>
+  </bean>
+
+  <bean id="photoService" class="cz.cvut.fit.vmw.slamasimon.flickr.service.PhotoService">
+    <constructor-arg name="flickrService" ref="flickrApi"/>
+    <constructor-arg name="flickrPageSize" value="${cz.vmw.flickr.api.page.size}"/>
+    <constructor-arg name="processManager" ref="processManager"/>
+  </bean>
+
+  <bean id="queueSettings" class="cz.cvut.fit.vmw.slamasimon.flickr.service.queue.QueueSettings">
+    <property name="corePoolSize" value="${cz.vmw.queue.corePoolSize}"/>
+    <property name="maximumPoolSize" value="${cz.vmw.queue.maximumPoolSize}"/>
+    <property name="keepAliveTime" value="${cz.vmw.queue.keepAliveTime}"/>
+    <property name="shutDownTimeout" value="${cz.vmw.queue.shutDownTimeout}"/>
+  </bean>
+
+  <bean id="processManager" class="cz.cvut.fit.vmw.slamasimon.flickr.service.queue.ProcessManagerImp"
+        destroy-method="shutdownAndAwaitTermination">
+    <property name="queueFutureTimeout" value="${cz.vmw.queue.default.future.timeout}"/>
+  </bean>
+
+</beans>
