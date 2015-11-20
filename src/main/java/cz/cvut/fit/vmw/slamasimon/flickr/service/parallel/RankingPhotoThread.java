@@ -4,7 +4,6 @@ import com.flickr4java.flickr.photos.Photo;
 import cz.cvut.fit.vmw.slamasimon.flickr.model.PhotoRanked;
 import cz.cvut.fit.vmw.slamasimon.flickr.ranking.Ranker;
 import cz.cvut.fit.vmw.slamasimon.flickr.ranking.UserValues;
-import cz.cvut.fit.vmw.slamasimon.flickr.service.parallel.ProcessDataHolder;
 
 public class RankingPhotoThread extends Thread {
 

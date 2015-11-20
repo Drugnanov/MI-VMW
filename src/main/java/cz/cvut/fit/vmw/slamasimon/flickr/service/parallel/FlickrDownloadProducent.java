@@ -19,7 +19,8 @@ public class FlickrDownloadProducent extends Thread {
   private int photosLimit;
   private int pageLimit;
 
-  public FlickrDownloadProducent(ProcessDataHolder pdh, FlickrService flickrService, String text, int pagesCount, int pageLimit) {
+  public FlickrDownloadProducent(ProcessDataHolder pdh, FlickrService flickrService, String text, int pagesCount,
+                                 int pageLimit) {
     this.pdh = pdh;
     this.flickrService = flickrService;
     this.text = text;
@@ -29,16 +30,18 @@ public class FlickrDownloadProducent extends Thread {
 
   @Override
   public void run() {
-    int pagesCount = (int)Math.ceil((double) photosLimit / pageLimit);
-    for (int i = 0; i < pagesCount; i++) {
+    int pagesCount = (int) Math.ceil((double) photosLimit / pageLimit);
+    for (int i = 1 ; i <= pagesCount; i++) {
       TimeMeasure tm = new TimeMeasure();
-      int pageLimit = this.pageLimit;
-      if (i == pagesCount) {
-        pageLimit = photosLimit - (i) * pageLimit;
-      }
-      PhotoList<Photo> photosList = null;
+//      int pageLimit = this.pageLimit;
+//      if (i == (pagesCount - 1)) {
+//        pageLimit = photosLimit - (i) * pageLimit;
+//      }
       try {
-        photosList = flickrService.search(text, pageLimit, i);
+        PhotoList<Photo> photosList = flickrService.search(text, pageLimit, i);
+        for (Photo p : photosList) {
+          System.out.println("Page i:" + i + " image id:" + p.getId());
+        }
         pdh.putUnrankedPhotos(photosList);
       }
       catch (FlickrException e) {

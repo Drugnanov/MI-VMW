@@ -33,7 +33,7 @@ public class TestQueue extends AbstractJUnit4SpringContextTests {
     SortedMultiset<PhotoRanked> photoList = photoService.search("dog", 5);
     System.out.println("test");
     for (PhotoRanked photoRanked : photoList) {
-      System.out.println(photoRanked.photo.getTitle());
+      System.out.println(photoRanked.fphoto.getTitle());
     }
   }
 }

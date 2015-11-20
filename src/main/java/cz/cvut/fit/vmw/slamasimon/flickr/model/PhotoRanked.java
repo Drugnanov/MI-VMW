@@ -7,10 +7,10 @@ import com.flickr4java.flickr.photos.Photo;
  */
 public class PhotoRanked{
   Double rank = 0.0;
-  public Photo photo;
+  public Photo fphoto;
 
   public PhotoRanked(Photo photo) {
-    this.photo = photo;
+    this.fphoto = photo;
   }
 
   public Double getRank() {
@@ -19,5 +19,13 @@ public class PhotoRanked{
 
   public void setRank(Double rank) {
     this.rank = rank;
+  }
+
+  public Photo getFphoto() {
+    return fphoto;
+  }
+
+  public void setFphoto(Photo fphoto) {
+    this.fphoto = fphoto;
   }
 }

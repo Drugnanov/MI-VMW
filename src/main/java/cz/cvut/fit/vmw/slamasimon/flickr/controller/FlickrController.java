@@ -23,7 +23,7 @@ public class FlickrController {
   private final static String ROOT_NAVIGATION = "/flickr/search";
   private final static String MODEL_SEARCH_DATA = "searchData";
   private final static String MODEL_FLICKR_TEST = "flickrTest";
-  private final static String MODEL_SEARCH_RESULT_PHOTOS = "photosResult";
+  private final static String MODEL_SEARCH_RESULT_PHOTOS = "photos";
   private final static String MODEL_SEARCH_RESULT_PHOTO = "photoResult";
   private final static String MODEL_SEARCH_FOUND_NUMBER = "photosFoundNumber";
 
@@ -38,30 +38,21 @@ public class FlickrController {
     return "index";
   }
 
+  @RequestMapping(value = {ROOT_NAVIGATION}, method = RequestMethod.GET)
+  public String searchWithResultsGet(ModelMap model, SearchData searchData, HttpServletRequest request)
+      throws Exception {
+    searchData.setTag("dog");
+    return searchWithResultsPost(model, searchData, request);
+  }
+
   @RequestMapping(value = {ROOT_NAVIGATION}, method = RequestMethod.POST)
-  public String dispatcherBeanCreate(ModelMap model, SearchData searchData, HttpServletRequest request)
+  public String searchWithResultsPost(ModelMap model, SearchData searchData, HttpServletRequest request)
       throws Exception {
 
     SortedMultiset<PhotoRanked> photosSet = ps.search(searchData.getTag(), 10);
-    PhotoRanked photoRanked = null;
-    Photo photo = null;
-//    photo.getTags();
-    if (photosSet.size() > 0) {
-      List<PhotoRanked> list = new ArrayList<PhotoRanked>(photosSet);
-      photo = list.get(0).photo;
-//    for (Photo photo : list) {
-      GeoData geoData = photo.getGeoData();
-      User user = photo.getOwner();
-      int views = photo.getViews();
-      Date dateTaken = photo.getDateTaken();
-    }
-    else {
-      photo = new Photo();
-    }
-//    }
     int numberOfFound = photosSet.size();
     model.addAttribute(MODEL_SEARCH_FOUND_NUMBER, numberOfFound);
-    model.addAttribute(MODEL_SEARCH_RESULT_PHOTO, photo);
+    model.addAttribute(MODEL_SEARCH_RESULT_PHOTOS, photosSet);
     return "photos";
   }
 
