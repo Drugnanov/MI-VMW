@@ -41,7 +41,6 @@ public class FlickrController {
   @RequestMapping(value = {ROOT_NAVIGATION}, method = RequestMethod.GET)
   public String searchWithResultsGet(ModelMap model, SearchData searchData, HttpServletRequest request)
       throws Exception {
-    searchData.setTag("dog");
     return searchWithResultsPost(model, searchData, request);
   }
 
@@ -49,7 +48,7 @@ public class FlickrController {
   public String searchWithResultsPost(ModelMap model, SearchData searchData, HttpServletRequest request)
       throws Exception {
 
-    SortedMultiset<PhotoRanked> photosSet = ps.search(searchData.getTag(), 10);
+    SortedMultiset<PhotoRanked> photosSet = ps.search(searchData.getTag(), searchData.getMaxNumberOfPhotos());
     int numberOfFound = photosSet.size();
     model.addAttribute(MODEL_SEARCH_FOUND_NUMBER, numberOfFound);
     model.addAttribute(MODEL_SEARCH_RESULT_PHOTOS, photosSet);

@@ -5,11 +5,12 @@ package cz.cvut.fit.vmw.slamasimon.flickr.controller.model;
  */
 public class SearchData {
 
-  private String tag;
+  private String tag = "dog";
   private double latitude;
   private double longitude;
   private long views;
   private String description;
+  private int maxNumberOfPhotos = 10;
 
   public String getTag() {
     return tag;
@@ -49,5 +50,13 @@ public class SearchData {
 
   public void setDescription(String description) {
     this.description = description;
+  }
+
+  public int getMaxNumberOfPhotos() {
+    return maxNumberOfPhotos;
+  }
+
+  public void setMaxNumberOfPhotos(int maxNumberOfPhotos) {
+    this.maxNumberOfPhotos = maxNumberOfPhotos;
   }
 }

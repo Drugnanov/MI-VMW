@@ -12,6 +12,8 @@
   <form:form action="${searchURL}" method='POST' modelAttribute="searchData">
     <section class="">
       <div class="">
+        <label>Max number of photos:</label>
+        <form:input path="maxNumberOfPhotos" size="20"/>
         <label>Name:</label>
         <form:input path="tag" size="100"/>
         <label>Latitude:</label>
