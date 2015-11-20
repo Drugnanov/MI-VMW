@@ -1,7 +1,7 @@
 package cz.cvut.fit.vmw.slamasimon.flickr.service.parallel;
 
 import com.flickr4java.flickr.photos.Photo;
-import cz.cvut.fit.vmw.slamasimon.flickr.model.PhotoRanked;
+import cz.cvut.fit.vmw.slamasimon.flickr.model.RankedPhoto;
 import cz.cvut.fit.vmw.slamasimon.flickr.ranking.Ranker;
 import cz.cvut.fit.vmw.slamasimon.flickr.ranking.UserValues;
 
@@ -21,17 +21,17 @@ public class RankingPhotoThread extends Thread {
 
   @Override
   public void run() {
-    PhotoRanked photoRanked = null;
+    RankedPhoto rankedPhoto = null;
     try {
-      photoRanked = new PhotoRanked(photo);
+      rankedPhoto = new RankedPhoto(photo);
     }
     catch (Exception ex) {
-      System.out.println("Something get wrong.");
+      System.out.println("Something went wrong.");
       ex.printStackTrace();
     }
     finally {
-      if (photoRanked != null) {
-        pdh.putRankedPhoto(photoRanked);
+      if (rankedPhoto != null) {
+        pdh.putRankedPhoto(rankedPhoto);
       }
     }
   }

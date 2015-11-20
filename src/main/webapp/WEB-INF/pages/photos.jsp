@@ -13,15 +13,15 @@
     <div class="results span10">
       <c:forEach var="photo" items="${photos}">
         <div>
-          <a href="http://farm${photo.fphoto.farm}.staticflickr.com/${photo.fphoto.server}/${photo.fphoto.id}_${photo.fphoto.secret}.jpg"><img
+          <a href="http://farm${photo.photo.farm}.staticflickr.com/${photo.photo.server}/${photo.photo.id}_${photo.photo.secret}.jpg"><img
               width="75"
               height="75"
-              src="http://farm${photo.fphoto.farm}.staticflickr.com/${photo.fphoto.server}/${photo.fphoto.id}_${photo.fphoto.secret}_s.jpg"
+              src="http://farm${photo.photo.farm}.staticflickr.com/${photo.photo.server}/${photo.photo.id}_${photo.photo.secret}_s.jpg"
               style="opacity: 0"/></a><br/>
           rank:${photo.rank}<br/>
-          GEO:${photo.fphoto.geoData.latitude}/${photo.fphoto.geoData.longitude}<br/>
-          Description:${photo.fphoto.description}<br/>
-          Views:${photo.fphoto.views}<br/>
+          GEO:${photo.photo.geoData.latitude}/${photo.photo.geoData.longitude}<br/>
+          Description:${photo.photo.description}<br/>
+          Views:${photo.photo.views}<br/>
         </div>
       </c:forEach>
     </div>

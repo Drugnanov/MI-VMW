@@ -6,7 +6,7 @@ import com.google.common.collect.TreeMultiset;
 import cz.cvut.fit.vmw.slamasimon.flickr.exception.FlickerException;
 import cz.cvut.fit.vmw.slamasimon.flickr.exception.FlickerMessageException;
 import cz.cvut.fit.vmw.slamasimon.flickr.model.PhotoComparator;
-import cz.cvut.fit.vmw.slamasimon.flickr.model.PhotoRanked;
+import cz.cvut.fit.vmw.slamasimon.flickr.model.RankedPhoto;
 import cz.cvut.fit.vmw.slamasimon.flickr.ranking.Ranker;
 import cz.cvut.fit.vmw.slamasimon.flickr.ranking.UserValues;
 import cz.cvut.fit.vmw.slamasimon.flickr.service.parallel.FlickrDownloadConsument;
@@ -31,11 +31,11 @@ public class PhotoService {
     return flickrService.ping();
   }
 
-  public SortedMultiset<PhotoRanked> search(String text, int count)
+  public SortedMultiset<RankedPhoto> search(String text, int count)
       throws FlickrException, FlickerMessageException, FlickerException {
     TimeMeasure tm = new TimeMeasure();
 
-    SortedMultiset<PhotoRanked> orderedPhotos = TreeMultiset.create(new PhotoComparator());
+    SortedMultiset<RankedPhoto> orderedPhotos = TreeMultiset.create(new PhotoComparator());
 
     ProcessDataHolder pdh = new ProcessDataHolder();
 

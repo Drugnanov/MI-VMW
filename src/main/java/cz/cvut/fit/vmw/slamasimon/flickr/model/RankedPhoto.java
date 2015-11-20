@@ -5,12 +5,13 @@ import com.flickr4java.flickr.photos.Photo;
 /**
  * Created by Drugnanov on 18.11.2015.
  */
-public class PhotoRanked{
+public class RankedPhoto
+{
   Double rank = 0.0;
-  public Photo fphoto;
+  public Photo photo;
 
-  public PhotoRanked(Photo photo) {
-    this.fphoto = photo;
+  public RankedPhoto(Photo photo) {
+    this.photo = photo;
   }
 
   public Double getRank() {
@@ -21,11 +22,11 @@ public class PhotoRanked{
     this.rank = rank;
   }
 
-  public Photo getFphoto() {
-    return fphoto;
+  public Photo getPhoto() {
+    return photo;
   }
 
-  public void setFphoto(Photo fphoto) {
-    this.fphoto = fphoto;
+  public void setPhoto(Photo photo) {
+    this.photo = photo;
   }
 }
