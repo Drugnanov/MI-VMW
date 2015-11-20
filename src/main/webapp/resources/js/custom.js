@@ -1,16 +1,4 @@
 $(function () {
-  $('#colorpicker-showColor').click(function () {
-    $('#colorpicker').toggle('slide', {
-      direction: 'left'
-    });
-  });
-  $('#colorpicker').each(function () {
-    $(this).farbtastic(function (color) {
-      $('input[name=color]').attr('value', color);
-      $('#colorpicker-showColor').attr('style', 'background-color:' + color);
-    });
-  });
-
   $('form').submit(function () {
     if (isValid()) {
       var submitButton = $('input[name=submit]');
