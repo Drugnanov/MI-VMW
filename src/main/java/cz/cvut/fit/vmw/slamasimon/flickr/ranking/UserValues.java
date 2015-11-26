@@ -1,5 +1,7 @@
 package cz.cvut.fit.vmw.slamasimon.flickr.ranking;
 
+import com.flickr4java.flickr.photos.GeoData;
+
 import java.util.Date;
 
 /**
@@ -9,8 +11,9 @@ public class UserValues
 {
   private String description;
   private int viewsCount;
-  private double latitude;
-  private double longitude;
+//  private double latitude;
+//  private double longitude;
+  private GeoData geoData;
   private Date createdAt;
 
   private double descriptionWeight;
@@ -20,14 +23,21 @@ public class UserValues
 
   public UserValues()
   {
+    this.description = "";
+    this.viewsCount = 0;
+    this.geoData = null;
+    this.createdAt = null;
+    this.descriptionWeight = 1;
+    this.viewsCountWeight = 1;
+    this.geoWeight = 1;
+    this.createdAtWeight = 1;
   }
 
-  public UserValues(String description, int viewsCount, double latitude, double longitude, Date createdAt, double descriptionWeight, double viewsCountWeight, double geoWeight, double createdAtWeight)
+  public UserValues(String description, int viewsCount, GeoData geoData, Date createdAt, double descriptionWeight, double viewsCountWeight, double geoWeight, double createdAtWeight)
   {
     this.description = description;
     this.viewsCount = viewsCount;
-    this.latitude = latitude;
-    this.longitude = longitude;
+    this.geoData = geoData;
     this.createdAt = createdAt;
     this.descriptionWeight = descriptionWeight;
     this.viewsCountWeight = viewsCountWeight;
@@ -55,25 +65,25 @@ public class UserValues
     this.viewsCount = viewsCount;
   }
 
-  public double getLatitude()
-  {
-    return latitude;
-  }
-
-  public void setLatitude(double latitude)
-  {
-    this.latitude = latitude;
-  }
-
-  public double getLongitude()
-  {
-    return longitude;
-  }
-
-  public void setLongitude(double longitude)
-  {
-    this.longitude = longitude;
-  }
+//  public double getLatitude()
+//  {
+//    return latitude;
+//  }
+//
+//  public void setLatitude(double latitude)
+//  {
+//    this.latitude = latitude;
+//  }
+//
+//  public double getLongitude()
+//  {
+//    return longitude;
+//  }
+//
+//  public void setLongitude(double longitude)
+//  {
+//    this.longitude = longitude;
+//  }
 
   public Date getCreatedAt()
   {
@@ -123,5 +133,15 @@ public class UserValues
   public void setCreatedAtWeight(double createdAtWeight)
   {
     this.createdAtWeight = createdAtWeight;
+  }
+
+  public GeoData getGeoData()
+  {
+    return geoData;
+  }
+
+  public void setGeoData(GeoData geoData)
+  {
+    this.geoData = geoData;
   }
 }
