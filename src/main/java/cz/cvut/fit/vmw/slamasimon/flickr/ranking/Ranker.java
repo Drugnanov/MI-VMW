@@ -24,18 +24,30 @@ public class Ranker
   {
     System.out.println("ranking started");
     double[] scores = new double[4];
-    scores[0] = getStringDistance(photo.getDescription(), filters.getDescription())* filters.getDescriptionWeight();
-    scores[1] = getGeoDistance(photo.getGeoData().getLatitude(), photo.getGeoData().getLongitude(),
+    double rank = 0;
+    try {
+      System.out.printf("First");
+      scores[0] = getStringDistance(photo.getDescription(), filters.getDescription())* filters.getDescriptionWeight();
+      System.out.println("Second");
+      if (photo.getGeoData() != null) {
+        scores[1] = getGeoDistance(photo.getGeoData().getLatitude(), photo.getGeoData().getLongitude(),
             filters.getLatitude(), filters.getLongitude()) * filters.getGeoWeight();
-    scores[2] = getIntDistance(photo.getViews(), filters.getViewsCount()) * filters.getViewsCountWeight();
-    scores[3] = getDateDistance(photo.getDateAdded(), filters.getCreatedAt()) * filters.getCreatedAtWeight();
+      }
+      System.out.println("Third");
+      scores[2] = getIntDistance(photo.getViews(), filters.getViewsCount()) * filters.getViewsCountWeight();
+      System.out.printf("Four");
+      scores[3] = getDateDistance(photo.getDateAdded(), filters.getCreatedAt()) * filters.getCreatedAtWeight();
+      System.out.println("Five");
 
-    double total = 0;
-    for (double score : scores) {
-      total += score;
+      for (double score : scores) {
+        rank += score;
+      }
+    }
+    catch (Exception e) {
+      e.printStackTrace();
     }
 
-    return new RankedPhoto(photo, total);
+    return new RankedPhoto(photo, rank);
   }
 
   private double getStringDistance(String s1, String s2)
