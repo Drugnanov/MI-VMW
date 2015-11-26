@@ -7,7 +7,9 @@ import cz.cvut.fit.vmw.slamasimon.flickr.exception.FlickerException;
 import cz.cvut.fit.vmw.slamasimon.flickr.exception.FlickerMessageException;
 import cz.cvut.fit.vmw.slamasimon.flickr.model.PhotoComparator;
 import cz.cvut.fit.vmw.slamasimon.flickr.model.RankedPhoto;
+import cz.cvut.fit.vmw.slamasimon.flickr.ranking.GeoComparator;
 import cz.cvut.fit.vmw.slamasimon.flickr.ranking.Ranker;
+import cz.cvut.fit.vmw.slamasimon.flickr.ranking.StringComparator;
 import cz.cvut.fit.vmw.slamasimon.flickr.ranking.UserValues;
 import cz.cvut.fit.vmw.slamasimon.flickr.service.parallel.FlickrDownloadConsument;
 import cz.cvut.fit.vmw.slamasimon.flickr.service.parallel.FlickrDownloadProducent;
@@ -40,7 +42,7 @@ public class PhotoService {
     ProcessDataHolder pdh = new ProcessDataHolder();
 
     FlickrDownloadProducent producer = new FlickrDownloadProducent(pdh, flickrService, text, count, flickrPageSice);
-    FlickrDownloadConsument consumer = new FlickrDownloadConsument(pdh, new Ranker(), new UserValues());
+    FlickrDownloadConsument consumer = new FlickrDownloadConsument(pdh, new Ranker(new StringComparator(), new GeoComparator()), new UserValues());
     producer.start();
     consumer.start();
 
@@ -48,7 +50,7 @@ public class PhotoService {
       producer.join();
       consumer.join();
     } catch (InterruptedException ex) {
-      System.out.println("Something gets wrong");
+      System.out.println("Something went wrong");
     }
 
     orderedPhotos.addAll(pdh.getRankedPhotos());

@@ -14,6 +14,12 @@ public class RankedPhoto
     this.photo = photo;
   }
 
+  public RankedPhoto(Photo photo, Double rank)
+  {
+    this.photo = photo;
+    this.rank = rank;
+  }
+
   public Double getRank() {
     return rank;
   }

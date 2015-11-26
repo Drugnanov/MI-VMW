@@ -23,7 +23,7 @@ public class RankingPhotoThread extends Thread {
   public void run() {
     RankedPhoto rankedPhoto = null;
     try {
-      rankedPhoto = new RankedPhoto(photo);
+      rankedPhoto = ranker.rank(photo, values);
     }
     catch (Exception ex) {
       System.out.println("Something went wrong.");
