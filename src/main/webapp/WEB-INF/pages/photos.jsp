@@ -10,7 +10,7 @@
 
     <%--<spring:url value="/flickr/search" var="searchURL" htmlEscape="true"/>--%>
 
-    <div class="results span10 pull-right">
+    <div class="results span9 pull-right">
       <c:forEach var="photo" items="${photos}">
         <div class="pull-left photo">
           <a href="http://farm${photo.photo.farm}.staticflickr.com/${photo.photo.server}/${photo.photo.id}_${photo.photo.secret}_c.jpg"><img
