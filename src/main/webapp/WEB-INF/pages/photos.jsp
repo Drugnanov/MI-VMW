@@ -21,10 +21,10 @@
               style="opacity: 0"/>
           </a><br/>
             <div class="photo-description">
-              rank:${photo.rank}<br/>
-              GEO:${photo.photo.geoData.latitude}/${photo.photo.geoData.longitude}<br/>
-              Description:${photo.photo.description}<br/>
-              Views:${photo.photo.views}<br/>
+              <em>rank</em>: <strong>${photo.rank}</strong><br/>
+              <em>GEO</em>: ${photo.photo.geoData.latitude}/${photo.photo.geoData.longitude}<br/>
+              <em>Description</em>: ${photo.photo.description}<br/>
+              <em></em>Views</em>: ${photo.photo.views}<br/>
             </div>
         </div>
       </c:forEach>
