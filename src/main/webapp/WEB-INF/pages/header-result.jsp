@@ -9,6 +9,7 @@
 		<link rel="stylesheet" media="all" type="text/css" href="<c:url value="/resources/css/bootstrap-responsive.min.css" />" />
 		<link rel="stylesheet" media="all" type="text/css" href="<c:url value="/resources/css/screen.css" />" />
 		<link rel="stylesheet" media="all" type="text/css" href="<c:url value="/resources/css/jquery.lightbox-0.5.css" />" />
+		<link rel="stylesheet" media="all" type="text/css" href="<c:url value="/resources/css/custom.css" />" />
 		<script type="text/javascript" charset="utf-8" src="<c:url value="/resources/js/jquery-1.8.3.min.js" />" ></script>
 		<script type="text/javascript" charset="utf-8" src="<c:url value="/resources/js/jquery-ui-1.9.2.custom.min.js" />" ></script>
 		<script type="text/javascript" charset="utf-8" src="<c:url value="/resources/js/custom.js" />" ></script>

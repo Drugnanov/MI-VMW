@@ -1,0 +1,19 @@
+
+.photo {
+    background-color: white;
+    -webkit-box-shadow: 0px 3px 13px -2px rgba(0,0,0,0.66);
+    -moz-box-shadow: 0px 3px 13px -2px rgba(0,0,0,0.66);
+    box-shadow: 0px 3px 13px -2px rgba(0,0,0,0.66);
+    margin: 1em;
+    width: 17%;
+}
+
+.photo-description {
+    height: 8em;
+    margin: 0.5em;
+    overflow: hidden;
+}
+
+.pic-thumbnail {
+    width: 100%;
+}

@@ -12,16 +12,20 @@
 
     <div class="results span10 pull-right">
       <c:forEach var="photo" items="${photos}">
-        <div class="pull-left span2">
-          <a href="http://farm${photo.photo.farm}.staticflickr.com/${photo.photo.server}/${photo.photo.id}_${photo.photo.secret}.jpg"><img
-              width="150"
-              height="150"
+        <div class="pull-left photo">
+          <a href="http://farm${photo.photo.farm}.staticflickr.com/${photo.photo.server}/${photo.photo.id}_${photo.photo.secret}_c.jpg"><img
+              <%--width="150"--%>
+              <%--height="150"--%>
               src="http://farm${photo.photo.farm}.staticflickr.com/${photo.photo.server}/${photo.photo.id}_${photo.photo.secret}_q.jpg"
-              style="opacity: 0"/></a><br/>
-          rank:${photo.rank}<br/>
-          GEO:${photo.photo.geoData.latitude}/${photo.photo.geoData.longitude}<br/>
-          Description:${photo.photo.description}<br/>
-          Views:${photo.photo.views}<br/>
+              class="pic-thumbnail"
+              style="opacity: 0"/>
+          </a><br/>
+            <div class="photo-description">
+              rank:${photo.rank}<br/>
+              GEO:${photo.photo.geoData.latitude}/${photo.photo.geoData.longitude}<br/>
+              Description:${photo.photo.description}<br/>
+              Views:${photo.photo.views}<br/>
+            </div>
         </div>
       </c:forEach>
     </div>
