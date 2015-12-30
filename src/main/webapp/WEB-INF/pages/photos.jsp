@@ -10,13 +10,13 @@
 
     <%--<spring:url value="/flickr/search" var="searchURL" htmlEscape="true"/>--%>
 
-    <div class="results span10">
+    <div class="results span10 pull-right">
       <c:forEach var="photo" items="${photos}">
-        <div>
+        <div class="pull-left span2">
           <a href="http://farm${photo.photo.farm}.staticflickr.com/${photo.photo.server}/${photo.photo.id}_${photo.photo.secret}.jpg"><img
-              width="75"
-              height="75"
-              src="http://farm${photo.photo.farm}.staticflickr.com/${photo.photo.server}/${photo.photo.id}_${photo.photo.secret}_s.jpg"
+              width="150"
+              height="150"
+              src="http://farm${photo.photo.farm}.staticflickr.com/${photo.photo.server}/${photo.photo.id}_${photo.photo.secret}_q.jpg"
               style="opacity: 0"/></a><br/>
           rank:${photo.rank}<br/>
           GEO:${photo.photo.geoData.latitude}/${photo.photo.geoData.longitude}<br/>

@@ -14,6 +14,11 @@ public class Ranker
   private StringComparator stringComparator;
   private GeoComparator geoComparator;
 
+  private double stringLambda = 1;
+  private double geoLambda = 1;
+  private double intLambda = 1;
+  private double dateLambda = 1;
+
   public Ranker(StringComparator stringComparator, GeoComparator geoComparator)
   {
     this.stringComparator = stringComparator;
@@ -51,7 +56,8 @@ public class Ranker
 
   private double getStringDistance(String s1, String s2)
   {
-    return stringComparator.editDistance(s1, s2);
+    double editDistance = stringComparator.editDistance(s1, s2);
+    return normalizeAndDecay(editDistance, stringLambda);
   }
 
   private double getGeoDistance(GeoData photo, GeoData filter)
@@ -59,17 +65,26 @@ public class Ranker
     if (filter == null) return photo == null ? 0 : 1;
     if (photo == null) return 1;
 
-    return geoComparator.greatCircleDistance(photo.getLatitude(), photo.getLongitude(), filter.getLatitude(), filter.getLongitude());
+    double baseDistance = geoComparator.greatCircleDistance(photo.getLatitude(), photo.getLongitude(),
+            filter.getLatitude(), filter.getLongitude());
+    return normalizeAndDecay(baseDistance, geoLambda);
   }
 
   private double getIntDistance(int first, int second)
   {
-
-    return 1; // TODO
+    return normalizeAndDecay(Math.abs(first - second), intLambda);
   }
 
   private double getDateDistance(Date first, Date second)
   {
-    return 1; // TODO
+    long diff = Math.abs(first.getTime() - second.getTime());
+    long diffDays = diff / (24 * 60 * 60 * 1000);
+
+    return normalizeAndDecay(diffDays, dateLambda);
+  }
+
+  private double normalizeAndDecay(double input, double lambda)
+  {
+    return 1 - Math.pow(Math.E, -lambda * input);
   }
 }
