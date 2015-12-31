@@ -1,8 +1,10 @@
 package cz.cvut.fit.vmw.slamasimon.flickr.service;
 
 import com.flickr4java.flickr.FlickrException;
+import com.flickr4java.flickr.photos.GeoData;
 import com.google.common.collect.SortedMultiset;
 import com.google.common.collect.TreeMultiset;
+import cz.cvut.fit.vmw.slamasimon.flickr.controller.model.SearchData;
 import cz.cvut.fit.vmw.slamasimon.flickr.exception.FlickerException;
 import cz.cvut.fit.vmw.slamasimon.flickr.exception.FlickerMessageException;
 import cz.cvut.fit.vmw.slamasimon.flickr.model.PhotoComparator;
@@ -16,6 +18,8 @@ import cz.cvut.fit.vmw.slamasimon.flickr.service.parallel.FlickrDownloadProducen
 import cz.cvut.fit.vmw.slamasimon.flickr.service.parallel.ProcessDataHolder;
 import cz.cvut.fit.vmw.slamasimon.flickr.service.queue.ProcessManager;
 import cz.cvut.fit.vmw.slamasimon.flickr.util.TimeMeasure;
+
+import java.util.Date;
 
 public class PhotoService {
 
@@ -33,16 +37,27 @@ public class PhotoService {
     return flickrService.ping();
   }
 
-  public SortedMultiset<RankedPhoto> search(String text, int count)
+  public SortedMultiset<RankedPhoto> search(SearchData searchData)
       throws FlickrException, FlickerMessageException, FlickerException {
     TimeMeasure tm = new TimeMeasure();
+
+    String text = searchData.getTag();
+    int count = searchData.getMaxNumberOfPhotos();
+
+    UserValues userValues = new UserValues(
+            searchData.getDescription(),
+            (int)searchData.getViews(),
+            new GeoData(Double.toString(searchData.getLongitude()), Double.toString(searchData.getLatitude()), "1"),
+            new Date(),
+            1, 1, 1, 1
+    );
 
     SortedMultiset<RankedPhoto> orderedPhotos = TreeMultiset.create(new PhotoComparator());
 
     ProcessDataHolder pdh = new ProcessDataHolder();
 
     FlickrDownloadProducent producer = new FlickrDownloadProducent(pdh, flickrService, text, count, flickrPageSice);
-    FlickrDownloadConsument consumer = new FlickrDownloadConsument(pdh, new Ranker(new StringComparator(), new GeoComparator()), new UserValues());
+    FlickrDownloadConsument consumer = new FlickrDownloadConsument(pdh, new Ranker(new StringComparator(), new GeoComparator()), userValues);
     producer.start();
     consumer.start();
 

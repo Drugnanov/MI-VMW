@@ -14,10 +14,10 @@ public class Ranker
   private StringComparator stringComparator;
   private GeoComparator geoComparator;
 
-  private double stringLambda = 1;
-  private double geoLambda = 1;
-  private double intLambda = 1;
-  private double dateLambda = 1;
+  private double stringLambda = 0.25;
+  private double geoLambda = 0.25;
+  private double intLambda = 0.25;
+  private double dateLambda = 0.25;
 
   public Ranker(StringComparator stringComparator, GeoComparator geoComparator)
   {
@@ -43,6 +43,10 @@ public class Ranker
       scores[3] = getDateDistance(photo.getDateAdded(), filters.getCreatedAt()) * filters.getCreatedAtWeight();
       System.out.println("Five");
 
+//      for (int i = 0; i < scores.length; i++) {
+//        rank += scores[i];
+//      }
+
       for (double score : scores) {
         rank += score;
       }
@@ -65,18 +69,22 @@ public class Ranker
     if (filter == null) return photo == null ? 0 : 1;
     if (photo == null) return 1;
 
-    double baseDistance = geoComparator.greatCircleDistance(photo.getLatitude(), photo.getLongitude(),
-            filter.getLatitude(), filter.getLongitude());
+    double baseDistance = geoComparator.greatCircleDistance(photo.getLatitude(), photo.getLongitude(), filter.getLatitude(), filter.getLongitude());
+
     return normalizeAndDecay(baseDistance, geoLambda);
   }
 
   private double getIntDistance(int first, int second)
   {
+
     return normalizeAndDecay(Math.abs(first - second), intLambda);
   }
 
   private double getDateDistance(Date first, Date second)
   {
+    if (second == null) return first == null ? 0 : 1;
+    if (first == null) return 1;
+
     long diff = Math.abs(first.getTime() - second.getTime());
     long diffDays = diff / (24 * 60 * 60 * 1000);
 

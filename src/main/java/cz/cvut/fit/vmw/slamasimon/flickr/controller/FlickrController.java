@@ -45,7 +45,7 @@ public class FlickrController {
   public String searchWithResultsPost(ModelMap model, SearchData searchData, HttpServletRequest request)
       throws Exception {
 
-    SortedMultiset<RankedPhoto> photosSet = ps.search(searchData.getTag(), searchData.getMaxNumberOfPhotos());
+    SortedMultiset<RankedPhoto> photosSet = ps.search(searchData);
     int numberOfFound = photosSet.size();
     model.addAttribute(MODEL_SEARCH_FOUND_NUMBER, numberOfFound);
     model.addAttribute(MODEL_SEARCH_RESULT_PHOTOS, photosSet);
