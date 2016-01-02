@@ -51,13 +51,30 @@ Tyto vzdálenosti je pak třeba zkombinovat do jedné hodnoty, podle které jsou
 
 \subsection{Typy metadat}
 \subsubsection{Řetězec}
-Pro výpočet vzdálenosti mezi řetězci jsme zvolili \textit{Levenstheinovu vzdálenost}, která definuje vzdálenost jako počet přidání, odebrání a nahrazení písmen potřebných pro transformaci jednoho řetězce na druhý.
+Pro výpočet vzdálenosti mezi řetězci jsme zvolili \textit{Levenstheinovu vzdálenost}, která definuje vzdálenost jako počet přidání, odebrání a nahrazení písmen potřebných pro transformaci jednoho řetězce na druhý \cite{Levensthein}.
+Např. řetězce \texttt{"rank"} a \texttt{"tank"} mají vzdálenost 1 (výměna "r" za "t"), \texttt{"rank"} a \texttt{"rerank"} jsou ve vzdálenosti 2.
+
+Při implementaci je využito dynamického programování, protože naivní rekurzivní algoritmus si v rozumném čase neporadí s řetězci delšími než cca 10 znaků \cite{Levensthein_java}.
 
 \subsubsection{GPS}
+Při výpočtu vzdálenosti mezi dvěma body na zeměkouli (bod kde byla fotografie pořízena a bod vybraný uživatelem) jsme použili \textit{Great-circle Distance}, která počítá vzdálenost dvou bodů na povrchu (ideální) koule \cite{GCD}. Není tedy na Zemi úplně přesná, ale pro naše účely plně postačuje.
+
 \subsubsection{Datum}
+Vzdálenost mezi daty (datum pořízení fotografie a datum vybrané uživatelem) počítáme jednoduše jako absolutní hodnotu jejich rozdílu ve dnech.
+
 \subsubsection{Celá čísla}
+Vzdálenost mezi celými čísly (počet zklédnutí fotografie a číslo určené uživatelem) počítáme jednoduše jako absolutní hodnotu jejich rozdílu.
 
 \subsection{Kombinace vzdáleností (normalizace, decay funkce)}
+Rozsah hodnot jednotlivých typů metadat není stejný (u některých teoreticky neomezený). Mohlo by se tedy stát, že fotografie, která se shoduje ve všech metadatech kromě jednoho, kde je rozdíl hodnot naopak obrovský, bude nesprávně upozaděna oproti fotografii, která se liší ve všech metadatech, ale v řádově menší míře. Je proto třeba vzdálenosti nějakým způsobem \textit{normalizovat} -- převést do určitého společného rozsahu hodnot.
+
+My pro převedení do rozsahu \textit{(0, 1)} používáme tuto \textit{decay funkci}:
+\begin{equation}
+	f(x) = 1 - e^{-\lambda x}
+\end{equation}
+kde \(x\) je vypočtená vzdálenost a \(\lambda\) je parametr určující rychlost růstu funkce (čím větší je \(\lambda\), tím rychleji hodnota funkce roste k jedničce). Pro každý typ metadat je \(\lambda\) nastavena jinak (podle předpokládaného rozsahu hodnot daných metadat).
+
+Celkový \textit{rank} (menší je lepší) každé fotografie je pak dán součtem hodnot u všech typů metadat.
 
 \section{Implementace}
 - java

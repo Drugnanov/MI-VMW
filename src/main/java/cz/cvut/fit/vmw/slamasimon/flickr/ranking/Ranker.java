@@ -14,16 +14,16 @@ public class Ranker
   private StringComparator stringComparator;
   private GeoComparator geoComparator;
 
-  private double stringLambda = 0.25;
-  private double geoLambda = 0.25;
-  private double intLambda = 0.25;
-  private double dateLambda = 0.25;
+  private double stringLambda = 0.0625;
+  private double geoLambda = 0.125;
+  private double intLambda = 0.01;
+  private double dateLambda = 0.2;
 
   public Ranker(StringComparator stringComparator, GeoComparator geoComparator)
   {
     this.stringComparator = stringComparator;
     this.geoComparator = geoComparator;
-    // TODO other comparators will follow
+
   }
 
   public RankedPhoto rank(Photo photo, UserValues filters)
