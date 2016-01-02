@@ -28,19 +28,36 @@ sekundární vyhledávání na libovolná metadata.
 
 \subsection{Vstupy}
 Klíčové slovo, sada hodnot metadat pro setřídění a počet výsledků (omezení velikosti výstupu).
-Jako metadata určená k rerankingu jsme zvolili tyto:
+Jako metadata určená k rerankingu jsme zvolili tato:
 \begin{itemize}
 	\item Řetězec - popis obrázku.
 	\item GPS - místo kde byla fotka pořízena.
-	\item Integer - počet zhlédnutí obrázku
+	\item Integer - počet zhlédnutí obrázku.
+	\item Datum - datum pořízení obrázku.
 \end{itemize}
+U každého z metadat bude možné zvolit jeho váhu (míru důležitosti).
 
 \subsection{Výstup}
 Fotky, jejichž popis odpovídá klíčovému slovu. Fotky budou setříděné podle vzdálenosti ke zvoleným
 metadatům.
 
 \section{Způsob řešení}
-- geo reranking, date reranking, decay funkce, ...
+V této sekci je popsán použitý způsob rerankingu obecně a pro jednotlivé typy metadat.
+
+\subsection{Obecné principy}
+Reranking se dá obecně popsat jako "znovuseřazení" nějaké už řazené množiny -- v našem případě je první fází vyhledání fotek na Flickeru podle klíčového slova a množina výsledků tohoto hledání je poté seřazena podle "vzdálenosti" k použitým metadatům. Tato vzdálenost se pro různé typy dat počítá rozdílně a existuje mnoho způsobů jejího výpočtu; ve druhé části této kapitoly budou popsány námi vybrané typy výpočtu pro jednotlivé typy metadat.
+
+Tyto vzdálenosti je pak třeba zkombinovat do jedné hodnoty, podle které jsou pak obrázky seřazeny -- toto bude popsáno na konci kapitoly.
+
+\subsection{Typy metadat}
+\subsubsection{Řetězec}
+Pro výpočet vzdálenosti mezi řetězci jsme zvolili \textit{Levenstheinovu vzdálenost}, která definuje vzdálenost jako počet přidání, odebrání a nahrazení písmen potřebných pro transformaci jednoho řetězce na druhý.
+
+\subsubsection{GPS}
+\subsubsection{Datum}
+\subsubsection{Celá čísla}
+
+\subsection{Kombinace vzdáleností (normalizace, decay funkce)}
 
 \section{Implementace}
 - java
