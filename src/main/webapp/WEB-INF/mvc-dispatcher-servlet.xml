@@ -49,19 +49,6 @@
   <bean id="photoService" class="cz.cvut.fit.vmw.slamasimon.flickr.service.PhotoService">
     <constructor-arg name="flickrService" ref="flickrApi"/>
     <constructor-arg name="flickrPageSize" value="${cz.vmw.flickr.api.page.size}"/>
-    <constructor-arg name="processManager" ref="processManager"/>
-  </bean>
-
-  <bean id="queueSettings" class="cz.cvut.fit.vmw.slamasimon.flickr.service.queue.QueueSettings">
-    <property name="corePoolSize" value="${cz.vmw.queue.corePoolSize}"/>
-    <property name="maximumPoolSize" value="${cz.vmw.queue.maximumPoolSize}"/>
-    <property name="keepAliveTime" value="${cz.vmw.queue.keepAliveTime}"/>
-    <property name="shutDownTimeout" value="${cz.vmw.queue.shutDownTimeout}"/>
-  </bean>
-
-  <bean id="processManager" class="cz.cvut.fit.vmw.slamasimon.flickr.service.queue.ProcessManagerImp"
-        destroy-method="shutdownAndAwaitTermination">
-    <property name="queueFutureTimeout" value="${cz.vmw.queue.default.future.timeout}"/>
   </bean>
 
 </beans>

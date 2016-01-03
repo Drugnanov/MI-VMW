@@ -1,6 +1,6 @@
 package cz.cvut.fit.vmw.slamasimon.flickr;
 
-import com.google.common.collect.SortedMultiset;
+import cz.cvut.fit.vmw.slamasimon.flickr.controller.model.SearchData;
 import cz.cvut.fit.vmw.slamasimon.flickr.model.RankedPhoto;
 import cz.cvut.fit.vmw.slamasimon.flickr.service.PhotoService;
 import org.junit.Test;
@@ -10,7 +10,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import java.util.List;
 
 /**
  * Created by Drugnanov on 19.11.2015.
@@ -24,7 +24,10 @@ public class TestQueue extends AbstractJUnit4SpringContextTests {
   @Test
   public void simple() throws Exception {
     PhotoService photoService = (PhotoService) applicationContext.getBean("photoService");
-    SortedMultiset<RankedPhoto> photoList = photoService.search("dog", 5);
+    SearchData sd = new SearchData();
+//    sd.setTag("dog");
+//    sd.setMaxNumberOfPhotos(5);
+    List<RankedPhoto> photoList = photoService.search(sd);
     System.out.println("test");
     for (RankedPhoto photoRanked : photoList) {
       System.out.println(photoRanked.photo.getTitle());

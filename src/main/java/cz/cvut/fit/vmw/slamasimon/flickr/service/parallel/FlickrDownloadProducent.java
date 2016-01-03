@@ -6,8 +6,6 @@ import com.flickr4java.flickr.photos.PhotoList;
 import cz.cvut.fit.vmw.slamasimon.flickr.service.FlickrService;
 import cz.cvut.fit.vmw.slamasimon.flickr.util.TimeMeasure;
 
-import java.util.List;
-
 /**
  * Created by Drugnanov on 19.11.2015.
  */
@@ -33,10 +31,10 @@ public class FlickrDownloadProducent extends Thread {
     int pagesCount = (int) Math.ceil((double) photosLimit / pageLimit);
     for (int i = 1 ; i <= pagesCount; i++) {
       TimeMeasure tm = new TimeMeasure();
-//      int pageLimit = this.pageLimit;
-//      if (i == (pagesCount - 1)) {
-//        pageLimit = photosLimit - (i) * pageLimit;
-//      }
+      int pageLimit = this.pageLimit;
+      if (i == pagesCount) {
+        pageLimit = photosLimit - (i-1) * pageLimit;
+      }
       try {
         PhotoList<Photo> photosList = flickrService.search(text, pageLimit, i);
         for (Photo p : photosList) {

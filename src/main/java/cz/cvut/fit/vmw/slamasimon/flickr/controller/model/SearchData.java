@@ -1,5 +1,7 @@
 package cz.cvut.fit.vmw.slamasimon.flickr.controller.model;
 
+import java.util.Date;
+
 /**
  * Created by Drugnanov on 17.11.2015.
  */
@@ -11,6 +13,12 @@ public class SearchData {
   private long views;
   private String description;
   private int maxNumberOfPhotos = 10;
+  private Date createdAtDate = new Date();
+
+  private int descriptionWeight;
+  private int viewsCountWeight;
+  private int geoWeight;
+  private int createdAtWeight;
 
   public String getTag() {
     return tag;
@@ -58,5 +66,45 @@ public class SearchData {
 
   public void setMaxNumberOfPhotos(int maxNumberOfPhotos) {
     this.maxNumberOfPhotos = maxNumberOfPhotos;
+  }
+
+  public int getDescriptionWeight() {
+    return descriptionWeight;
+  }
+
+  public void setDescriptionWeight(int descriptionWeight) {
+    this.descriptionWeight = descriptionWeight;
+  }
+
+  public int getViewsCountWeight() {
+    return viewsCountWeight;
+  }
+
+  public void setViewsCountWeight(int viewsCountWeight) {
+    this.viewsCountWeight = viewsCountWeight;
+  }
+
+  public int getGeoWeight() {
+    return geoWeight;
+  }
+
+  public void setGeoWeight(int geoWeight) {
+    this.geoWeight = geoWeight;
+  }
+
+  public int getCreatedAtWeight() {
+    return createdAtWeight;
+  }
+
+  public void setCreatedAtWeight(int createdAtWeight) {
+    this.createdAtWeight = createdAtWeight;
+  }
+
+  public Date getCreatedAtDate() {
+    return createdAtDate;
+  }
+
+  public void setCreatedAtDate(Date createdAtDate) {
+    this.createdAtDate = createdAtDate;
   }
 }
