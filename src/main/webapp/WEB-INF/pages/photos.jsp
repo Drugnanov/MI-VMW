@@ -1,6 +1,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <jsp:include page="header-result.jsp"/>
 <%--<jsp:include page="header.jsp"/>--%>
 <jsp:include page="search.jsp"/>
@@ -21,8 +22,8 @@
               style="opacity: 0"/>
           </a><br/>
             <div class="photo-description">
-              <em>rank</em>: <strong>${photo.rank}</strong><br/>
-              <em>GEO</em>: ${photo.photo.geoData.latitude}/${photo.photo.geoData.longitude}<br/>
+              <p><fmt:formatNumber value="${photo.rank}" maxFractionDigits="2" minFractionDigits="2"/></p>
+              <em>GEO</em>:<c:if test="${photo.photo.geoData.latitude != null}">${photo.photo.geoData.latitude}/${photo.photo.geoData.longitude}</c:if><c:if test="${photo.photo.geoData.latitude == null}">-</c:if><br/>
               <em>Description</em>: ${photo.photo.description}<br/>
               <em></em>Views</em>: ${photo.photo.views}<br/>
             </div>

@@ -49,7 +49,10 @@ public class PhotoService {
             (int)searchData.getViews(),
             new GeoData(Double.toString(searchData.getLongitude()), Double.toString(searchData.getLatitude()), "1"),
             new Date(),
-            1, 1, 1, 1
+            searchData.getDescriptionWeight(),
+            searchData.getViewsCountWeight(),
+            searchData.getGeoWeight(),
+            searchData.getCreatedAtWeight()
     );
 
     SortedMultiset<RankedPhoto> orderedPhotos = TreeMultiset.create(new PhotoComparator());

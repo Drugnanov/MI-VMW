@@ -83,7 +83,7 @@ public class Ranker
   private double getDateDistance(Date first, Date second)
   {
     if (second == null) return first == null ? 0 : 1;
-    if (first == null) return 1;
+    if (first == null) return 0;
 
     long diff = Math.abs(first.getTime() - second.getTime());
     long diffDays = diff / (24 * 60 * 60 * 1000);
