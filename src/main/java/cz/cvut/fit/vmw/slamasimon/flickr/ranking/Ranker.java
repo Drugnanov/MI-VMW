@@ -17,7 +17,7 @@ public class Ranker
   private double stringLambda = 0.01;
   private double geoLambda = 0.001;
   private double intLambda = 0.0001;
-  private double dateLambda = 0.01;
+  private double dateLambda = 0.005;
 
   public Ranker(StringComparator stringComparator, GeoComparator geoComparator)
   {

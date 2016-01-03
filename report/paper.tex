@@ -76,6 +76,9 @@ kde \(x\) je vypočtená vzdálenost a \(\lambda\) je parametr určující rychl
 
 Celkový \textit{rank} (menší je lepší) každé fotografie je pak dán součtem hodnot u všech typů metadat.
 
+\subsection{Váhy metadat}
+Uživatel má možnost u každého typu metadat určit, jakou váhu mu přisuzuje -- výsledky s nízkou vzdáleností u daného typu budou pak upřednostněny více nebo méně. Pro naše účely jsme zvolili jednoduchou volbu z 5 hodnot (vah): 0, 0.5, 1, 1.5, 2 (0 ve výsledku vypne řazení podle daného typu metadat).
+
 \section{Implementace}
 
 \subsection{Java}
@@ -136,20 +139,30 @@ vstupu nebo naopak velikosti výstupu. Lze pak například do grafu nebo tabulku
 vynést takovéto závislosti."
 
 \section{Diskuze}
+\iffalse
 - zadání: "Většina projektů je typu “proof of koncept“, tj. jde o vyzkoušení poznatků
 prezentovaných v přednáškách v praxi. Nejde tedy o detailní řešení všech problémů,
 které mohou při implementaci nastat – takový projekt by dalece přesahoval rámec
 semestrálního projektu. Tato sekce tedy obsahuje rozbor těchto nedostatků a
 potenciálním způsobu jejich řešení."
+\fi
+V projektu zkoušíme řazení podle čtyř typů metadat -- poloha, datum, celé číslo, řetězec. Bylo by samozřejmě možné provádět re-ranking i podle dalších atributů fotografií (např. podle jejich velikosti, poměru stran, \ldots), nicméně principy jsou obdobné. Mohli bychom také např. zohledňovat, v jakém pořadí vrací Flickr fotografie v základním dotazu pomocí klíčového slova.
+
+Naše aplikace také řadí velmi malou podmnožinu fotografií na Flickru -- vždy v reálném čase stáhne daný počet fotografií a porovnává pouze je. Tento nedostatek by se dal vyřešit indexací (části) databáze Flickru do lokální databáze a prací nad těmito daty. Nicméně samotný algoritmus porovnávání by nebylo třeba nijak upravovat -- je nezávislý na množství a zdroji dat.
+
+
 
 \section{Závěr}
-- vyzkoušeli jsme si, naučili jsme se, seznámilli jsme se, implementovali jsme, ...
+V rámci semestrální práce jsme se seznámili s principy re-rankingu a navrhli a implementovali webovou aplikaci provádějící re-ranking fotografií ze služby Flickr na základě jejich metadat. V rámci práce na aplikaci jsme naučili využívat některé algoritmy na měření vzdáleností mezi numerickými i nenumerickými hodnotami, např. Levenstheinovu (editační) vzdálenost pro měření vzálenosti mezi dvěma řetězci. Dále jsme si vyzkoušeli, jak dané vzdálenosti kombinovat a normalizovat.
 
+- něco k implementaci? Napsat ja parádně naše aplikace funguje?
+
+\iffalse
 v============== cizí semestrálka ================v
 
 \section{Použité technologie}
 
-Rozhodli jsme se použít programovací jazyk Java. Protože nedílnou součástí naší práce je i~webové rozhraní, použijeme variantu Java Enterprise Edition (Java EE). Jako aplikační platformu jsme vybrali volně dostupný, veřejně přístupný a~snadno škálovatelný systém Google App Engine \cite{GoogleAE}, který zdarma poskytuje serverový prostor pro aplikace naprogramované i~v~Java EE.
+%Rozhodli jsme se použít programovací jazyk Java. Protože nedílnou součástí naší práce je i~webové rozhraní, použijeme variantu Java Enterprise Edition (Java EE). Jako aplikační platformu jsme vybrali volně dostupný, veřejně přístupný a~snadno škálovatelný systém Google App Engine \cite{GoogleAE}, který zdarma poskytuje serverový prostor pro aplikace naprogramované i~v~Java EE.
 
 Pro vývoj jsme použili verzovací systém git, konkrétně veřejně přístupný portál github.com \cite{official}. Pokud je v textu odkazováno k~nějaké vývojové větvi, naleznete ji právě tam.
 
@@ -258,13 +271,15 @@ Velkou nevýhodou algoritmu je nezávislé posuzování tří kanálů barevnéh
 
 Google App Engine bohužel neumožňuje použití některých standardních knihoven a~tříd jazyka Java, a~proto jsme museli v~některých částech aplikace sáhnout k~náhradním řešením.
 
-Naše aplikace tak musí obsahovat vlastní implementaci dekodéru formátu JPEG, který jsme převzali z~\cite{Dersch}, protože GAE nepodporuje použití Javovské třídy BufferedImage.
+%Naše aplikace tak musí obsahovat vlastní implementaci dekodéru formátu JPEG, který jsme převzali z~\cite{Dersch}, protože GAE nepodporuje použití Javovské třídy BufferedImage.
 
 \section{Závěr}
 
 Myslíme si, že v~rámci semestrální práce se nám povedlo implementovat docela použitelný hodnotící algoritmus, který vyniká poměrně velkou rychlostí, jež je bohužel vykoupena nepřesností algoritmu. Použitá váha obrázku není zcela špatná a~po zapojení některých metod na eliminaci například velkých špicí v~histogramech by se její účinnost mohla ještě zlepšit.
 
-Aplikace je veřejně dostupná na \cite{liveApp}, zdrojové kódy jsou veřejně přístupné k nahlédnutí na \cite{official}.
+%Aplikace je veřejně dostupná na \cite{liveApp}, zdrojové kódy jsou veřejně přístupné k nahlédnutí na \cite{official}.
+
+\fi
 
 \renewcommand{\refname}{Literatura}
 \bibliographystyle{ieeetr}
