@@ -14,12 +14,14 @@
       <div class="form-group">
         <label>Max number of photos:</label>
         <form:input path="maxNumberOfPhotos" size="20" class="span3" />
-        <label>Name:</label>
+        <label>Keyword:</label>
         <form:input path="tag" size="100" class="span3"/>
         <label>Views:</label>
         <form:input path="views" size="100" class="span3"/>
         <label>Views weight (0-2):</label>
         <form:input type="range" path="viewsCountWeight" size="100" class="span3 weight" id="viewsCountWeight" min="0" max="2" step="0.5"/>
+        <label>Upload date:</label>
+        <form:input type="date" path="createdAt" size="100" class="span3"/>
         <label>Description:</label>
         <form:textarea path="description" size="100" class="span3"/>
         <label>Description weight (0-2):</label>
