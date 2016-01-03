@@ -13,7 +13,7 @@ public class SearchData {
   private long views;
   private String description;
   private int maxNumberOfPhotos = 10;
-  private Date createdAt;
+  private Date createdAt = new Date();
 
   private double descriptionWeight = 1;
   private double viewsCountWeight = 1;

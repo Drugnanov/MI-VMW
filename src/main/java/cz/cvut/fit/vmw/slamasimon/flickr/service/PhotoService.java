@@ -2,8 +2,6 @@ package cz.cvut.fit.vmw.slamasimon.flickr.service;
 
 import com.flickr4java.flickr.FlickrException;
 import com.flickr4java.flickr.photos.GeoData;
-import com.google.common.collect.SortedMultiset;
-import com.google.common.collect.TreeMultiset;
 import cz.cvut.fit.vmw.slamasimon.flickr.controller.model.SearchData;
 import cz.cvut.fit.vmw.slamasimon.flickr.exception.FlickerException;
 import cz.cvut.fit.vmw.slamasimon.flickr.exception.FlickerMessageException;
@@ -16,28 +14,25 @@ import cz.cvut.fit.vmw.slamasimon.flickr.ranking.UserValues;
 import cz.cvut.fit.vmw.slamasimon.flickr.service.parallel.FlickrDownloadConsument;
 import cz.cvut.fit.vmw.slamasimon.flickr.service.parallel.FlickrDownloadProducent;
 import cz.cvut.fit.vmw.slamasimon.flickr.service.parallel.ProcessDataHolder;
-import cz.cvut.fit.vmw.slamasimon.flickr.service.queue.ProcessManager;
 import cz.cvut.fit.vmw.slamasimon.flickr.util.TimeMeasure;
 
-import java.util.Date;
+import java.util.*;
 
 public class PhotoService {
 
   private FlickrService flickrService;
   private int flickrPageSice;
-  private ProcessManager processManager;
 
-  public PhotoService(FlickrService flickrService, int flickrPageSize, ProcessManager processManager) {
+  public PhotoService(FlickrService flickrService, int flickrPageSize) {
     this.flickrService = flickrService;
     this.flickrPageSice = flickrPageSize;
-    this.processManager = processManager;
   }
 
   public boolean checkFlickr() {
     return flickrService.ping();
   }
 
-  public SortedMultiset<RankedPhoto> search(SearchData searchData)
+  public List<RankedPhoto> search(SearchData searchData)
       throws FlickrException, FlickerMessageException, FlickerException {
     TimeMeasure tm = new TimeMeasure();
 
@@ -55,14 +50,12 @@ public class PhotoService {
             searchData.getCreatedAtWeight()
     );
 
-    SortedMultiset<RankedPhoto> orderedPhotos = TreeMultiset.create(new PhotoComparator());
-
     ProcessDataHolder pdh = new ProcessDataHolder();
 
     FlickrDownloadProducent producer = new FlickrDownloadProducent(pdh, flickrService, text, count, flickrPageSice);
     FlickrDownloadConsument consumer = new FlickrDownloadConsument(pdh, new Ranker(new StringComparator(), new GeoComparator()), userValues);
-    producer.start();
-    consumer.start();
+    producer.run();
+    consumer.run();
 
     try {
       producer.join();
@@ -71,11 +64,32 @@ public class PhotoService {
       System.out.println("Something went wrong");
     }
 
-    orderedPhotos.addAll(pdh.getRankedPhotos());
+    List<RankedPhoto> orderedPhotos = new ArrayList<RankedPhoto>(pdh.getRankedPhotos());
+    Collections.sort(orderedPhotos,  new PhotoComparator());
+
     tm.stop();
 
     return orderedPhotos;
   }
+
+
+  //    PriorityQueue orderedPhotos = new PriorityQueue<RankedPhoto>(pdh.getRankedPhotos().size(), new PhotoComparator());
+//    orderedPhotos.addAll(pdh.getRankedPhotos());
+//    Arrays.sort(orderedPhotos.toArray());
+
+//    List<RankedPhoto> items = new ArrayList<RankedPhoto>(orderedPhotos);
+//    String idsOrderedString = "";
+//    for (RankedPhoto rankedPhoto : orderedPhotos) {
+//      idsOrderedString += rankedPhoto.photo.getId() + "(" + rankedPhoto.getRank()+ ");";
+//    }
+//    System.out.println("Id Ordered:" +idsOrderedString);
+
+//    String idsPhdString = "";
+//    for (RankedPhoto rankedPhoto : pdh.getRankedPhotos()) {
+//      idsPhdString += rankedPhoto.photo.getId() + "(" + rankedPhoto.getRank()+ ");";
+//    }
+//    System.out.println("Id PHD:" +idsPhdString);
+
 
   //    List<Integer> tasks = new ArrayList<Integer>();
 //    int pageCount = (int) Math.ceil((double) count / flickrPageSice);

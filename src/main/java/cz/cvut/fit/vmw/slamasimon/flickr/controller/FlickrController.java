@@ -1,7 +1,6 @@
 package cz.cvut.fit.vmw.slamasimon.flickr.controller;
 
 import com.flickr4java.flickr.FlickrException;
-import com.google.common.collect.SortedMultiset;
 import cz.cvut.fit.vmw.slamasimon.flickr.controller.model.SearchData;
 import cz.cvut.fit.vmw.slamasimon.flickr.model.RankedPhoto;
 import cz.cvut.fit.vmw.slamasimon.flickr.service.PhotoService;
@@ -12,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Controller
 @RequestMapping("/")
@@ -45,7 +45,7 @@ public class FlickrController {
   public String searchWithResultsPost(ModelMap model, SearchData searchData, HttpServletRequest request)
       throws Exception {
 
-    SortedMultiset<RankedPhoto> photosSet = ps.search(searchData);
+    List<RankedPhoto> photosSet = ps.search(searchData);
     int numberOfFound = photosSet.size();
     model.addAttribute(MODEL_SEARCH_FOUND_NUMBER, numberOfFound);
     model.addAttribute(MODEL_SEARCH_RESULT_PHOTOS, photosSet);

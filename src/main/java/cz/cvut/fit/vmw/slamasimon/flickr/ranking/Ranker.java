@@ -38,7 +38,7 @@ public class Ranker
       scores[1] = getGeoDistance(photo.getGeoData(), filters.getGeoData()) * filters.getGeoWeight();
 
       System.out.println("Third");
-      scores[2] = getIntDistance(photo.getViews(), filters.getViewsCount()) * filters.getViewsCountWeight();
+      scores[2] = getIntDistance( photo.getViews(), filters.getViewsCount()) * filters.getViewsCountWeight();
       System.out.printf("Four");
       scores[3] = getDateDistance(photo.getDateAdded(), filters.getCreatedAt()) * filters.getCreatedAtWeight();
       System.out.println("Five");

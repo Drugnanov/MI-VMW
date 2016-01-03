@@ -62,7 +62,7 @@ public class ProcessDataHolder {
 		producingUnrankedPhotos = false;
 	}
 
-	public Collection<RankedPhoto> getRankedPhotos() {
+	public synchronized Collection<RankedPhoto> getRankedPhotos() {
 		return rankedPhotos;
 	}
 
