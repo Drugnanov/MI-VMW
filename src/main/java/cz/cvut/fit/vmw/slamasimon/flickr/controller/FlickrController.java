@@ -74,7 +74,7 @@ public class FlickrController {
       }
       if (searchData.getTag().length() <= 2) {
         errors.add(
-            "Search keyword with length " + searchData.getTag().length() + " is too short. Pls use more than two chars.");
+            "Search keyword with length " + searchData.getTag().length() + " is too short. Please use more than two chars.");
       }
     }
     if (searchData.getCreatedAt() != null && searchData.getCreatedAt().length() > 0){

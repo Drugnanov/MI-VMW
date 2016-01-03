@@ -4,6 +4,7 @@
 %\usepackage{epsf,epic,eepic,eepicemu,url,graphicx}
 \usepackage{epsf,url,graphicx}
 \usepackage[utf8]{inputenc}
+\usepackage{float}
 
 %% code listings, pretty simple, but works quite ok :-)
 \newenvironment{listing}
@@ -129,7 +130,32 @@ Aplikace potřebuje přístup k internetu, přesněji prostup na API flickru. Da
 
 
 \section{Příklad výstupu}
-- tady se dá nahnat délka :)
+Základní rozvržení aplikace je vidět na obrázku \ref{fig:layout}. Vlevo je vyhledávací formulář, kde je možné nahoře zvolit počet porovnávaných obrázků a klíčové slovo pro hledání na Flickru. Ve spodní části formuláře je pak možné volit hodnoty a váhy (pomocí posuvníků) jednotlivých typů metadat.
+
+Vpravo se pak nachází výsledky vyhledávání - karty obrázků, které obsahují celkové skóre obrázku a hodnoty jednotlivých metadat. Po kliknutí na náhled obrázku se stánhe a zobrazí jeho větší verze.
+
+\begin{figure}[H] \begin{center}
+\includegraphics[width=13cm]{pics/layout.png} \caption{Rozvržení aplikace}
+\label{fig:layout}
+\end{center} \end{figure}
+
+\subsection{Vyhledávání bez/s re-rankingem}
+Jako příklad uvádíme vyhledání klíčového slova \texttt{"dakota"}, s tím, že uživatele zajímají fotky ze (Severní/Jižní) Dakoty v USA. Při prostém vyhledávání bez re-rankingu (stahujeme 100 fotek) se sice zobrazí i fotografie z Dakoty, ale jak je vidět na obrázku \ref{fig:dakota_no_geo} kromě nich také fotografie herečky Dakoty Fanning, letadla Douglas DC-3 Dakota a další. Ve výsledku jsou fotografie, které hledáme, v menšině.
+
+
+
+\begin{figure}[H] \begin{center}
+\includegraphics[width=13.5cm]{pics/dakota_no_geo.png} \caption{Vyhledání slova "dakota" bez re-rankingu (prvních 8 výsledků)}
+\label{fig:dakota_no_geo}
+\end{center} \end{figure}
+
+Při určení požadované polohy fotky (někde na rozmezí Severní a Jižní Dakoty) jsou výsledky diametrálně odlišné -- většina fotografií na prvních pozicích ukazuje přírodu v Dakotě a jinak tematicky zaměřené fotky jsou daleko vzadu (obrázek \ref{fig:dakota_geo}).
+
+\begin{figure} \begin{center}
+\includegraphics[width=13.5cm]{pics/dakota_geo.png} \caption{Vyhledání slova "dakota" s re-rankingem (prvních 8 výsledků)}
+\label{fig:dakota_geo}
+\end{center} \end{figure}
+
 
 \section{Experimentální sekce}
 - ze zadání: "Většina projektů lze posuzovat z hlediska přesnosti či rychlosti (nebo obojího),
