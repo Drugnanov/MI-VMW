@@ -77,10 +77,49 @@ kde \(x\) je vypočtená vzdálenost a \(\lambda\) je parametr určující rychl
 Celkový \textit{rank} (menší je lepší) každé fotografie je pak dán součtem hodnot u všech typů metadat.
 
 \section{Implementace}
-- java
-- knihovny
-- flickr api
-- požadavky na běh
+
+\subsection{Java}
+
+Aplikace je implementována v programovacích jazyce Java s využitím frameworku Spring s architekturou MVC (Model-View-Controller).
+Front-end je pak realizován pomocí jsp a využívá css a javascript od boostrapu a jquery.
+
+Vypíchnout můžeme způsob stažení a rerankingu fotek z flickru. Stažení a reranking je realizováno v samostatných vláknech na principu producent/ konzument. Fotky jsou z flickru staženy vždy po stránkách jejichž velikost je konfigurovatelná pomocí property souboru. Stažené fotky jsou umístěny do sdíleného uložiště mezi oběma vlákny. Reranking průběžně reaguje na stažení nových fotek a pro každou fotku zakládá nové vláknu odpovídající za výpočet rankingu. Vysledekem celého zpracování je list seřazených fotek podle nového rankingu.
+
+\subsection{Knihovny}
+
+Z nejdůležitějších knihoven uveďme (další viz POM projektu):
+\begin{itemize}
+	\item Spring ve verzi 4.1.1
+	\item flickr4java ve verzi 2.13
+	\item javax.servlet ve verzi 1.2
+	\item slf4j a logback ve verzi 1.75 respektive 1.0.13
+\end{itemize}
+
+\subsection{Flicker API}
+
+Pro konzumaci Flicker API je použita knihovna flickr4java. Knihovna odstiňuje od samotné komunikace s Flickerem a poskytuje API s parametrizovaných vstupem a výstupy do objektů odpovídajících specifikaci Flickr API. 
+
+Příklad volání flickr API před knihovnu flickr4java:
+/ToDO formátování
+flickr.getPhotosInterface().search(searchParameters, pageLimit, pageOrder);
+
+Applikační beany
+  <bean id="flickrRest" class="com.flickr4java.flickr.REST"/>
+  
+  <bean id="flickr" class="com.flickr4java.flickr.Flickr">
+  <constructor-arg name="apiKey" value="${cz.vmw.flickr.api.apikey}"/>
+  <constructor-arg name="sharedSecret" value="${cz.vmw.flickr.api.sharekey}"/>
+  <constructor-arg name="transport" ref="flickrRest"/>
+  </bean>
+  
+Objekt flickr je vytvořen v kontextu aplikace a konfigurován z property souboru. Nad instancí je možné zvolit potřebné flickr rozhraní. V našem případě definujeme rozhraní pro stažení fotek. Dále už stačí zvolit akci search a dodat potřebné parametry. SearchParameter obsahuje filtr fotek které hledáme (tag) a specifikuje atributy, které se mají vrátit nad rámek běžné odpovědi (geo, views, description, date_taken). PageLimit a pageOrder umožňují rozdělit stahování na více oddělených dotazů tak, aby každý stáhl unikátní sadu fotek. Toho v aplikaci využíváme viz. část implementace.
+ 
+
+\subsection{Požadavky na běh}
+
+Současná verze aplikace byla vyvíjena a nasazena na Glassfish verze 4.1.1 pod Javou 1.7.80. Nejsou použity žádné speciální funkce Glassfish serveru a nic tedy nebrání nasazení do jiných kontejnerů (např. Tomcat, Weblogic, WildFly). U Javy je třeba použít verzi 1.7 a vyšší.
+
+Aplikace potřebuje přístup k internetu, přesněji prostup na API flickru. Další externí požadavky nemá. Díky své jednoduchosti nemá aplikace speciální nároky na systémové zdroje.
 
 
 \section{Příklad výstupu}

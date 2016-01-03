@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -23,6 +26,7 @@ public class FlickrController {
   private final static String MODEL_SEARCH_RESULT_PHOTOS = "photos";
   private final static String MODEL_SEARCH_RESULT_PHOTO = "photoResult";
   private final static String MODEL_SEARCH_FOUND_NUMBER = "photosFoundNumber";
+  private final static String MODEL_SEARCH_ERRORS = "errors";
 
   @Autowired
   private PhotoService ps;
@@ -45,11 +49,45 @@ public class FlickrController {
   public String searchWithResultsPost(ModelMap model, SearchData searchData, HttpServletRequest request)
       throws Exception {
 
-    List<RankedPhoto> photosSet = ps.search(searchData);
-    int numberOfFound = photosSet.size();
+    List<RankedPhoto> photosSet = new ArrayList<RankedPhoto>();
+    int numberOfFound = 0;
+
+    List<String> errors = checkSearchData(searchData);
+    if (errors.size() == 0) {
+      photosSet = ps.search(searchData);
+      numberOfFound = photosSet.size();
+    }
     model.addAttribute(MODEL_SEARCH_FOUND_NUMBER, numberOfFound);
     model.addAttribute(MODEL_SEARCH_RESULT_PHOTOS, photosSet);
+    model.addAttribute(MODEL_SEARCH_ERRORS, errors);
     return "photos";
+  }
+
+  private List<String> checkSearchData(SearchData searchData) {
+    List<String> errors = new ArrayList<String>();
+    if (searchData.getMaxNumberOfPhotos() < 1) {
+      errors.add("Bad number of photos to search. Value '" + searchData.getMaxNumberOfPhotos() + "' is invalid.");
+    }
+    if (searchData.getTag() == null || searchData.getTag().length() <= 2) {
+      if (searchData.getTag() == null) {
+        errors.add("Search keyword is empty. Its not allowed.");
+      }
+      if (searchData.getTag().length() <= 2) {
+        errors.add(
+            "Search keyword with length " + searchData.getTag().length() + " is too short. Pls use more than two chars.");
+      }
+    }
+    if (searchData.getCreatedAt() != null && searchData.getCreatedAt().length() > 0){
+      SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+      try {
+        searchData.setCreatedAtD(format.parse(searchData.getCreatedAt()));
+      }
+      catch (ParseException e) {
+        errors.add(
+            "Date '" + searchData.getCreatedAt() + "' is invalid. Accepted format is dd.mm.yyyy");
+      }
+    }
+    return errors;
   }
 
   public PhotoService getPs() {

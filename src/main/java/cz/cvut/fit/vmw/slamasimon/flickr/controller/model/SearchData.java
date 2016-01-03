@@ -13,7 +13,8 @@ public class SearchData {
   private long views;
   private String description;
   private int maxNumberOfPhotos = 10;
-  private Date createdAt = new Date();
+  private String createdAt = "";
+  private Date createdAtD;
 
   private double descriptionWeight = 1;
   private double viewsCountWeight = 1;
@@ -68,12 +69,20 @@ public class SearchData {
     this.maxNumberOfPhotos = maxNumberOfPhotos;
   }
 
-  public Date getCreatedAt() {
+  public String getCreatedAt() {
     return createdAt;
   }
 
-  public void setCreatedAt(Date createdAt) {
+  public void setCreatedAt(String createdAt) {
     this.createdAt = createdAt;
+  }
+
+  public Date getCreatedAtD() {
+    return createdAtD;
+  }
+
+  public void setCreatedAtD(Date createdAtD) {
+    this.createdAtD = createdAtD;
   }
 
   public double getDescriptionWeight()
