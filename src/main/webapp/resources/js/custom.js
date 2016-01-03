@@ -66,3 +66,8 @@ $(function () {
 
   map.on('click', onMapClick);
 });
+
+
+$(document).ready(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+});

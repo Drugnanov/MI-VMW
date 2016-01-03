@@ -5,10 +5,12 @@
 <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css"/>
 <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
 
+<h1>Flickr metadata-based re-ranking</h1>
+
 <div class="innerContent pull-left span3">
   <spring:url value="/flickr/search" var="searchURL" htmlEscape="true"/>
 
-  <h4>Search on flicker:</h4>
+  <h4>Search:</h4>
 
   <form:form action="${searchURL}" method='POST' modelAttribute="searchData">
     <c:forEach var="error" items="${errors}">
@@ -27,8 +29,11 @@
         <label>Views weight (0-2):</label>
         <form:input type="range" path="viewsCountWeight" size="100" class="span3 weight" id="viewsCountWeight" min="0"
                     max="2" step="0.5"/>
-        <label>Upload date:</label>
+        <label>Date taken:</label>
         <form:input type="date" path="createdAt" size="100" class="span3"/>
+        <label>Date taken weight:</label>
+        <form:input type="range" path="createdAtWeight" size="100" class="span3 weight" id="createdAtWeight" min="0"
+                    max="2" step="0.5"/>
         <label>Description:</label>
         <form:textarea path="description" size="100" class="span3"/>
         <label>Description weight (0-2):</label>

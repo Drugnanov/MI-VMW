@@ -14,10 +14,10 @@ public class Ranker
   private StringComparator stringComparator;
   private GeoComparator geoComparator;
 
-  private double stringLambda = 0.0625;
-  private double geoLambda = 0.125;
-  private double intLambda = 0.01;
-  private double dateLambda = 0.2;
+  private double stringLambda = 0.01;
+  private double geoLambda = 0.001;
+  private double intLambda = 0.0001;
+  private double dateLambda = 0.02;
 
   public Ranker(StringComparator stringComparator, GeoComparator geoComparator)
   {
@@ -40,7 +40,7 @@ public class Ranker
       System.out.println("Third");
       scores[2] = getIntDistance( photo.getViews(), filters.getViewsCount()) * filters.getViewsCountWeight();
       System.out.printf("Four");
-      scores[3] = getDateDistance(photo.getDateAdded(), filters.getCreatedAt()) * filters.getCreatedAtWeight();
+      scores[3] = getDateDistance(photo.getDateTaken(), filters.getCreatedAt()) * filters.getCreatedAtWeight();
       System.out.println("Five");
 
 //      for (int i = 0; i < scores.length; i++) {
@@ -76,14 +76,14 @@ public class Ranker
 
   private double getIntDistance(int first, int second)
   {
-
-    return normalizeAndDecay(Math.abs(first - second), intLambda);
+    int difference = first - second;
+    return normalizeAndDecay(Math.abs(difference), intLambda);
   }
 
   private double getDateDistance(Date first, Date second)
   {
     if (second == null) return first == null ? 0 : 1;
-    if (first == null) return 0;
+    if (first == null) return 1;
 
     long diff = Math.abs(first.getTime() - second.getTime());
     long diffDays = diff / (24 * 60 * 60 * 1000);

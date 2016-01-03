@@ -9,7 +9,7 @@
 }
 
 .photo-description {
-    height: 8em;
+    height: 11em;
     margin: 0.5em;
     overflow: hidden;
 }
@@ -32,4 +32,11 @@ div.errorRed{
 
 .weight {
     margin-bottom: 1em;
+}
+
+h1 {
+    font-family: 'Cabin', sans-serif;
+    margin: 30px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
 }

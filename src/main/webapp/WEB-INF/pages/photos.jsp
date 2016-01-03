@@ -2,6 +2,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <jsp:include page="header-result.jsp"/>
 <%--<jsp:include page="header.jsp"/>--%>
 <jsp:include page="search.jsp"/>
@@ -23,9 +24,11 @@
           </a><br/>
             <div class="photo-description">
               <p><fmt:formatNumber value="${photo.rank}" maxFractionDigits="2" minFractionDigits="2"/></p>
-              <em>GEO</em>:<c:if test="${photo.photo.geoData.latitude != null}">${photo.photo.geoData.latitude}/${photo.photo.geoData.longitude}</c:if><c:if test="${photo.photo.geoData.latitude == null}">-</c:if><br/>
-              <em>Description</em>: ${photo.photo.description}<br/>
-              <em></em>Views</em>: ${photo.photo.views}<br/>
+              <strong>GEO:</strong> <c:if test="${photo.photo.geoData.latitude != null}">${photo.photo.geoData.latitude}/${photo.photo.geoData.longitude}</c:if><c:if test="${photo.photo.geoData.latitude == null}">-</c:if><br/>
+              <%--<strong <c:if test="${fn:length(photo.photo.description) > 40}">data-toggle="tooltip" data-placement="left" title="${fn:escapeXml(photo.photo.description)}"</c:if>>--%>
+              <strong>Description:</strong> ${fn:escapeXml(fn:substring(photo.photo.description, 0, 40))}${fn:length(photo.photo.description) > 40 ? '...' : ''} <small>(${fn:length(photo.photo.description)}&nbsp;chars)</small><br/>
+              <strong>Views:</strong> ${photo.photo.views}<br/>
+              <strong>Date:</strong> <fmt:formatDate value="${photo.photo.dateTaken}" type="date"/><br/>
             </div>
         </div>
       </c:forEach>

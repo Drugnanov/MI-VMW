@@ -100,10 +100,13 @@ Z nejdůležitějších knihoven uveďme (další viz POM projektu):
 Pro konzumaci Flicker API je použita knihovna flickr4java. Knihovna odstiňuje od samotné komunikace s Flickerem a poskytuje API s parametrizovaných vstupem a výstupy do objektů odpovídajících specifikaci Flickr API. 
 
 Příklad volání flickr API před knihovnu flickr4java:
-/ToDO formátování
+\begin{verbatim}
 flickr.getPhotosInterface().search(searchParameters, pageLimit, pageOrder);
+\end{verbatim}
+
 
 Applikační beany
+\begin{verbatim}
   <bean id="flickrRest" class="com.flickr4java.flickr.REST"/>
   
   <bean id="flickr" class="com.flickr4java.flickr.Flickr">
@@ -111,8 +114,8 @@ Applikační beany
   <constructor-arg name="sharedSecret" value="${cz.vmw.flickr.api.sharekey}"/>
   <constructor-arg name="transport" ref="flickrRest"/>
   </bean>
-  
-Objekt flickr je vytvořen v kontextu aplikace a konfigurován z property souboru. Nad instancí je možné zvolit potřebné flickr rozhraní. V našem případě definujeme rozhraní pro stažení fotek. Dále už stačí zvolit akci search a dodat potřebné parametry. SearchParameter obsahuje filtr fotek které hledáme (tag) a specifikuje atributy, které se mají vrátit nad rámek běžné odpovědi (geo, views, description, date_taken). PageLimit a pageOrder umožňují rozdělit stahování na více oddělených dotazů tak, aby každý stáhl unikátní sadu fotek. Toho v aplikaci využíváme viz. část implementace.
+\end{verbatim}  
+Objekt flickr je vytvořen v kontextu aplikace a konfigurován z property souboru. Nad instancí je možné zvolit potřebné flickr rozhraní. V našem případě definujeme rozhraní pro stažení fotek. Dále už stačí zvolit akci search a dodat potřebné parametry. SearchParameter obsahuje filtr fotek které hledáme (keyword) a specifikuje atributy, které se mají vrátit nad rámek běžné odpovědi (geo, views, description, date\_taken). PageLimit a pageOrder umožňují rozdělit stahování na více oddělených dotazů tak, aby každý stáhl unikátní sadu fotek. Toho v aplikaci využíváme viz. část implementace.
  
 
 \subsection{Požadavky na běh}

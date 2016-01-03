@@ -43,7 +43,7 @@ public class PhotoService {
             searchData.getDescription(),
             (int)searchData.getViews(),
             new GeoData(Double.toString(searchData.getLongitude()), Double.toString(searchData.getLatitude()), "1"),
-            new Date(),
+            searchData.getCreatedAtD(),
             searchData.getDescriptionWeight(),
             searchData.getViewsCountWeight(),
             searchData.getGeoWeight(),
