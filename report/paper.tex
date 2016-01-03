@@ -5,6 +5,7 @@
 \usepackage{epsf,url,graphicx}
 \usepackage[utf8]{inputenc}
 \usepackage{float}
+\usepackage{todonotes}
 
 %% code listings, pretty simple, but works quite ok :-)
 \newenvironment{listing}
@@ -14,7 +15,7 @@
 \begin{document}
 \begin{center}
 \bf MI-VMW\\[2mm]
-    \begin{Large}Flickr - reranking založený na metadatech\end{Large}\\[3mm]
+    \begin{Large}Flickr - re-ranking založený na metadatech\end{Large}\\[3mm]
        Michal Sláma (slamamic@fit.cvut.cz)\\
        Šimon Steklík (steklsim@fit.cvut.cz)\\
 leden 2016
@@ -90,7 +91,7 @@ Front-end je pak realizován pomocí jsp a využívá css a javascript od boostr
 Vypíchnout můžeme způsob stažení a rerankingu fotek z flickru. Stažení a reranking je realizováno v samostatných vláknech na principu producent/ konzument. Fotky jsou z flickru staženy vždy po stránkách jejichž velikost je konfigurovatelná pomocí property souboru. Stažené fotky jsou umístěny do sdíleného uložiště mezi oběma vlákny. Reranking průběžně reaguje na stažení nových fotek a pro každou fotku zakládá nové vláknu odpovídající za výpočet rankingu. Vysledekem celého zpracování je list seřazených fotek podle nového rankingu.
 
 \subsection{Knihovny}
-
+\todo{dodělat ("učesat") Implementaci}
 Z nejdůležitějších knihoven uveďme (další viz POM projektu):
 \begin{itemize}
 	\item Spring ve verzi 4.1.1
@@ -158,6 +159,7 @@ Při určení požadované polohy fotky (někde na rozmezí Severní a Jižní D
 
 
 \section{Experimentální sekce}
+\todo{Něco do expreimentální sekce? V zadání je, že bychom mohli měřit dobu běhu (kolik zabere reranking vs. api)}
 - ze zadání: "Většina projektů lze posuzovat z hlediska přesnosti či rychlosti (nebo obojího),
 přičemž tyto jsou závislé na různých vstupních parametrech projektu. V této sekci by
 měly být takové parametry zkoumány. Např. rychlost typicky závisí na velikosti
@@ -172,6 +174,8 @@ které mohou při implementaci nastat – takový projekt by dalece přesahoval 
 semestrálního projektu. Tato sekce tedy obsahuje rozbor těchto nedostatků a
 potenciálním způsobu jejich řešení."
 \fi
+
+
 V projektu zkoušíme řazení podle čtyř typů metadat -- poloha, datum, celé číslo, řetězec. Bylo by samozřejmě možné provádět re-ranking i podle dalších atributů fotografií (např. podle jejich velikosti, poměru stran, \ldots), nicméně principy jsou obdobné. Mohli bychom také např. zohledňovat, v jakém pořadí vrací Flickr fotografie v základním dotazu pomocí klíčového slova.
 
 Naše aplikace také řadí velmi malou podmnožinu fotografií na Flickru -- vždy v reálném čase stáhne daný počet fotografií a porovnává pouze je. Tento nedostatek by se dal vyřešit indexací (části) databáze Flickru do lokální databáze a prací nad těmito daty. Nicméně samotný algoritmus porovnávání by nebylo třeba nijak upravovat -- je nezávislý na množství a zdroji dat.
@@ -181,7 +185,7 @@ Naše aplikace také řadí velmi malou podmnožinu fotografií na Flickru -- v�
 \section{Závěr}
 V rámci semestrální práce jsme se seznámili s principy re-rankingu a navrhli a implementovali webovou aplikaci provádějící re-ranking fotografií ze služby Flickr na základě jejich metadat. V rámci práce na aplikaci jsme naučili využívat některé algoritmy na měření vzdáleností mezi numerickými i nenumerickými hodnotami, např. Levenstheinovu (editační) vzdálenost pro měření vzálenosti mezi dvěma řetězci. Dále jsme si vyzkoušeli, jak dané vzdálenosti kombinovat a normalizovat.
 
-- něco k implementaci? Napsat ja parádně naše aplikace funguje?
+\todo{Závěr - něco k implementaci? Napsat ja parádně naše aplikace funguje?}
 
 \iffalse
 v============== cizí semestrálka ================v
