@@ -37,13 +37,26 @@ $(function () {
 });
 
 function setGeo(lat, lng) {
-  $('#longitude').val(lat.toString());
-  $('#latitude').val(lng.toString());
+  $('#longitude').val(lng.toString());
+  $('#latitude').val(lat.toString());
 }
 
 $(function () {
-  var latDef = 50.104838;
-  var lonDef = 14.389772;
+  var latDef;
+  var lonDef;
+
+  if ($('#latitude').val() == 0 && $('#longitude').val() == 0) {
+    latDef = 50.104838;
+    lonDef = 14.389772;
+  } else {
+    latDef = $('#latitude').val();
+    lonDef = $('#longitude').val();
+    console.log($('#latitude').val());
+    console.log(latDef);
+    console.log($('#longitude').val());
+  }
+
+
 
   var map = L.map('map').setView([latDef, lonDef], 13);
 

@@ -40,9 +40,9 @@
         <form:input type="range" path="descriptionWeight" size="100" class="span3 weight" id="descriptionWeight" min="0"
                     max="2" step="0.5"/>
         <label>Latitude:</label>
-        <form:input path="latitude" size="100" class="span3" disabled="true" id="latitude"/>
+        <form:input path="latitude" size="100" class="span3" id="latitude"/>
         <label>Longitude:</label>
-        <form:input path="longitude" size="100" class="span3" disabled="true" id="longitude"/>
+        <form:input path="longitude" size="100" class="span3" id="longitude"/>
         <div id="map"></div>
         <label>Geo weight (0-2):</label>
         <form:input type="range" path="geoWeight" size="100" class="span3 weight" id="geoWeight" min="0" max="2"

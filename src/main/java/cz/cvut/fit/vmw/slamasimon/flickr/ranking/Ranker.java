@@ -17,7 +17,7 @@ public class Ranker
   private double stringLambda = 0.01;
   private double geoLambda = 0.001;
   private double intLambda = 0.0001;
-  private double dateLambda = 0.02;
+  private double dateLambda = 0.01;
 
   public Ranker(StringComparator stringComparator, GeoComparator geoComparator)
   {
@@ -80,12 +80,13 @@ public class Ranker
     return normalizeAndDecay(Math.abs(difference), intLambda);
   }
 
-  private double getDateDistance(Date first, Date second)
+  private double getDateDistance(Date photo, Date filter)
   {
-    if (second == null) return first == null ? 0 : 1;
-    if (first == null) return 1;
+//    if (filter == null) return photo == null ? 0 : 1;
+    if (filter == null) return 0;
+    if (photo == null) return 1;
 
-    long diff = Math.abs(first.getTime() - second.getTime());
+    long diff = Math.abs(photo.getTime() - filter.getTime());
     long diffDays = diff / (24 * 60 * 60 * 1000);
 
     return normalizeAndDecay(diffDays, dateLambda);
