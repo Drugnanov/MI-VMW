@@ -2,14 +2,11 @@ package cz.cvut.fit.vmw.slamasimon.flickr.service.parallel;
 
 import com.flickr4java.flickr.photos.Photo;
 import cz.cvut.fit.vmw.slamasimon.flickr.ranking.Ranker;
-import cz.cvut.fit.vmw.slamasimon.flickr.service.parallel.RankingPhotoThread;
 import cz.cvut.fit.vmw.slamasimon.flickr.ranking.UserValues;
-import cz.cvut.fit.vmw.slamasimon.flickr.service.FlickrService;
+import cz.cvut.fit.vmw.slamasimon.flickr.util.TimeMeasure;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Created by Drugnanov on 19.11.2015.
@@ -20,6 +17,7 @@ public class FlickrDownloadConsument extends Thread {
   private Ranker ranker;
   private UserValues values;
   private List<Thread> threadPool = new ArrayList<Thread>();
+  private List<TimeMeasure> tms = new ArrayList<TimeMeasure>();
 
   public FlickrDownloadConsument(ProcessDataHolder pdh, Ranker ranker, UserValues values) {
     this.pdh = pdh;
@@ -38,11 +36,21 @@ public class FlickrDownloadConsument extends Thread {
 
     for (Thread thread : threadPool) {
       try {
-        thread.join();
-      } catch (InterruptedException ex) {
-        System.out.println("Something gets wrong.");
-        ex.printStackTrace();
+        try {
+          thread.join();
+          tms.add(((RankingPhotoThread) thread).getTm());
+        } catch (InterruptedException ex) {
+          System.out.println("Something gets wrong.");
+          ex.printStackTrace();
+        }
+      }
+      catch (Exception e) {
+        e.printStackTrace();
       }
     }
+  }
+
+  public List<TimeMeasure> getTms() {
+    return tms;
   }
 }

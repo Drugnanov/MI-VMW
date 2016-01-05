@@ -13,6 +13,7 @@
   <h4>Search:</h4>
 
   <form:form action="${searchURL}" method='POST' modelAttribute="searchData">
+
     <c:forEach var="error" items="${errors}">
       <div class="errorRed"><c:out value="${error}"/></div>
     </c:forEach>
@@ -51,4 +52,13 @@
     </section>
     <form:button type="submit" class="btn btn-block btn-primary">Search</form:button>
   </form:form>
+
+  <c:if test="${executionTimes != null}">
+    <div class="form-group">
+      <div>Execution time:<c:out value="${executionTimes.executionTime}"/></div>
+      <div>Download time (per photo):<c:out value="${executionTimes.downloadTime}"/></div>
+      <div>Reranking time (per photo):<c:out value="${executionTimes.rerankingTime}"/></div>
+      <div>Ratio (D/R):<c:out value="${executionTimes.ratioDownRerank}"/></div>
+    </div>
+  </c:if>
 </div>

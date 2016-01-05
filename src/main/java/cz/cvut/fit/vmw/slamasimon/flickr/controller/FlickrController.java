@@ -1,6 +1,7 @@
 package cz.cvut.fit.vmw.slamasimon.flickr.controller;
 
 import com.flickr4java.flickr.FlickrException;
+import cz.cvut.fit.vmw.slamasimon.flickr.controller.model.ExecutionTime;
 import cz.cvut.fit.vmw.slamasimon.flickr.controller.model.SearchData;
 import cz.cvut.fit.vmw.slamasimon.flickr.model.RankedPhoto;
 import cz.cvut.fit.vmw.slamasimon.flickr.service.PhotoService;
@@ -27,6 +28,7 @@ public class FlickrController {
   private final static String MODEL_SEARCH_RESULT_PHOTO = "photoResult";
   private final static String MODEL_SEARCH_FOUND_NUMBER = "photosFoundNumber";
   private final static String MODEL_SEARCH_ERRORS = "errors";
+  private final static String MODEL_SEARCH_EXECUTION_TIME = "executionTimes";
 
   @Autowired
   private PhotoService ps;
@@ -50,16 +52,24 @@ public class FlickrController {
       throws Exception {
 
     List<RankedPhoto> photosSet = new ArrayList<RankedPhoto>();
+    ExecutionTime tms = null;
     int numberOfFound = 0;
 
     List<String> errors = checkSearchData(searchData);
     if (errors.size() == 0) {
-      photosSet = ps.search(searchData);
-      numberOfFound = photosSet.size();
+      try {
+        photosSet = ps.search(searchData);
+        numberOfFound = photosSet.size();
+        tms = ps.getExecutionTimes();
+      }
+      catch (Exception e) {
+        errors.add("Something goes wrong! " + e.getMessage() + " e type:" + e.toString());
+      }
     }
     model.addAttribute(MODEL_SEARCH_FOUND_NUMBER, numberOfFound);
     model.addAttribute(MODEL_SEARCH_RESULT_PHOTOS, photosSet);
     model.addAttribute(MODEL_SEARCH_ERRORS, errors);
+    model.addAttribute(MODEL_SEARCH_EXECUTION_TIME, tms);
     return "photos";
   }
 
@@ -98,20 +108,3 @@ public class FlickrController {
     this.ps = ps;
   }
 }
-
-//String apiKey = "d61cc5374a430814bffbf4bad756a3cb";
-//String sharedSecret = "5bf1bb7c5ffe55a4";
-//Flickr f = new Flickr(apiKey, sharedSecret, new REST());
-//SearchParameters searchParameters = new SearchParameters();
-////    searchParameters.setHasGeo(true);
-//Set<String> extra = new LinkedHashSet<String>();
-////    extra.add("owner_name");
-////    extra.add("tags");
-//extra.add("geo");
-//    extra.add("views");
-//    extra.add("description");
-//    extra.add("date_taken");
-//    searchParameters.setExtras(extra);
-////    searchParameters.setText("klánovice");
-//    searchParameters.setText(searchData.getTag());
-//    searchParameters.setSort(SearchParameters.RELEVANCE);
