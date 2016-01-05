@@ -6,6 +6,9 @@ import com.flickr4java.flickr.photos.PhotoList;
 import cz.cvut.fit.vmw.slamasimon.flickr.service.FlickrService;
 import cz.cvut.fit.vmw.slamasimon.flickr.util.TimeMeasure;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Drugnanov on 19.11.2015.
  */
@@ -19,31 +22,46 @@ public class FlickrDownloadProducent extends Thread {
   private TimeMeasure tm;
   private int downloadedPhotos = 0;
 
-  public FlickrDownloadProducent(ProcessDataHolder pdh, FlickrService flickrService, String text, int pagesCount,
+  public FlickrDownloadProducent(ProcessDataHolder pdh, FlickrService flickrService, String text, int photosLimit,
                                  int pageLimit) {
     this.pdh = pdh;
     this.flickrService = flickrService;
     this.text = text;
-    this.photosLimit = pagesCount;
+    this.photosLimit = photosLimit;
     this.pageLimit = pageLimit;
   }
 
+//  https://www.flickr.com/services/api/explore/flickr.photos.search
   @Override
   public void run() {
     int pagesCount = (int) Math.ceil((double) photosLimit / pageLimit);
+    List<String> photosId = new ArrayList<String>();
     tm = new TimeMeasure();
+    int photosToAccept = pageLimit;
     for (int i = 1 ; i <= pagesCount; i++) {
-      int pageLimit = this.pageLimit;
       if (i == pagesCount) {
-        pageLimit = photosLimit - (i-1) * pageLimit;
+        photosToAccept = photosLimit - (i-1) * pageLimit;
       }
       try {
         PhotoList<Photo> photosList = flickrService.search(text, pageLimit, i);
-        downloadedPhotos += photosList.size();
-        for (Photo p : photosList) {
-          System.out.println("Page i:" + i + " image id:" + p.getId());
+        if (photosToAccept == pageLimit){
+          pdh.putUnrankedPhotos(photosList);
+          downloadedPhotos += photosList.size();
+          //debug
+          for (Photo p : photosList) {
+            checkPhoto(p, photosId);
+          }
         }
-        pdh.putUnrankedPhotos(photosList);
+        else {
+          for (Photo p : photosList) {
+            pdh.putUnrankedPhotos(p);
+            downloadedPhotos++;
+            checkPhoto(p, photosId);
+            photosToAccept--;
+            if (photosToAccept == 0) break;
+          }
+        }
+
       }
       catch (FlickrException e) {
         System.out.println("Something gets wrong during downloading photos.");
@@ -51,6 +69,15 @@ public class FlickrDownloadProducent extends Thread {
     }
     tm.stop();
     pdh.noMoreUnrankedPhotos();
+  }
+
+  private void checkPhoto(Photo p, List<String> photosId) {
+    if (photosId.contains(p.getId())) {
+      System.out.println("ERROR photos with id " + p.getId() + " was downloaded previously!!");
+    }
+    else {
+      photosId.add(p.getId());
+    }
   }
 
   public TimeMeasure getTm() {

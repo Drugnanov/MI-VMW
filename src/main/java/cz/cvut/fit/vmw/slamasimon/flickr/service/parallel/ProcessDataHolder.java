@@ -38,6 +38,11 @@ public class ProcessDataHolder {
 		notifyAll();
 	}
 
+	public synchronized void putUnrankedPhotos(Photo p) {
+		unrankedPhotos.add(p);
+		notifyAll();
+	}
+
 	public synchronized void putRankedPhoto(RankedPhoto photo) {
 		unrankedOut--;
 		rankedPhotos.add(photo);
@@ -65,5 +70,4 @@ public class ProcessDataHolder {
 	public synchronized Collection<RankedPhoto> getRankedPhotos() {
 		return rankedPhotos;
 	}
-
 }
