@@ -183,7 +183,7 @@ Zde jsme testovali naši verzi programu s návrhem vláknovým zpracováním typ
 
 Pro testovací účely ponecháváme na formulářové obrazovce časy zpracování (celkový, stažení, rerakingu, poměr download/ reranking).
 
-Při běžných vstupních hodnotách se stahování fotek (meta dat) z Flickr API se ukázalo jako více omezujícím než jejich reranking. Nastavení velikosti stránky na malou hodnotu (např. pod hodnotu 10 při 150 hledaných fotkách) mělo za následek ještě výraznější zpomalení stahování a proto jsme velikost stránky nastavili 30 s předpokladem počtu stahovaných fotek do 150.
+Při běžných vstupních hodnotách se stahování fotek (meta dat) z Flickr API ukázalo jako více omezujícím než jejich reranking. Nastavení velikosti stránky na malou hodnotu (např. pod hodnotu 10 při 150 hledaných fotkách) mělo za následek ještě výraznější zpomalení stahování a proto jsme velikost stránky nastavili 30 s předpokladem počtu stahovaných fotek do 150.
 
 Mluvili jsme o běžných vstupních hodnotách pro reranking. Krajní hodnoty vstupních dat nepředstavují výraznější rozdíl vypočtu ranku až na pole \textit{description}. Zde může uživatel zadat libovolně dlouhý text a čas rankování (funkce pro porovnání dvou řetězců) se tím výrazně prodlužuje. Například při stažení 50 fotek a požití 20 000 znakového textu v \textit{description} se dostáváme na poměr časy pro download/reranking 1/14. Zadání takového textu považuje za spíše teoretické a optimalizace funkce pro porovnání řetězců nepovažujeme za nutnou.
 
