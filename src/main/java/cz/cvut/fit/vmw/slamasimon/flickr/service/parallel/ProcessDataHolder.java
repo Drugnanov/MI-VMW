@@ -1,6 +1,7 @@
 package cz.cvut.fit.vmw.slamasimon.flickr.service.parallel;
 
 import com.flickr4java.flickr.photos.Photo;
+import cz.cvut.fit.vmw.slamasimon.flickr.model.CommentedPhoto;
 import cz.cvut.fit.vmw.slamasimon.flickr.model.RankedPhoto;
 
 import java.util.Collection;
@@ -11,12 +12,14 @@ public class ProcessDataHolder {
 
 	private Queue<Photo> unrankedPhotos;
 	private Queue<RankedPhoto> rankedPhotos;
+	private Queue<CommentedPhoto> commentedPhotos;
 	private int unrankedOut = 0;
 	private boolean producingUnrankedPhotos = true;
 
 	public ProcessDataHolder() {
 		this.unrankedPhotos = new LinkedList<Photo>();
 		this.rankedPhotos = new LinkedList<RankedPhoto>();
+		this.commentedPhotos = new LinkedList<CommentedPhoto>();
 	}
 
 	public synchronized Photo getNextUnrankedPhoto() {
@@ -49,6 +52,12 @@ public class ProcessDataHolder {
 		notifyAll();
 	}
 
+	public synchronized void putCommentedPhoto(CommentedPhoto photo) {
+		unrankedOut--;
+		commentedPhotos.add(photo);
+		notifyAll();
+	}
+
 	public synchronized boolean hasUnrankedPhotos() {
 		if (producingUnrankedPhotos) {
 			while (unrankedPhotos.isEmpty()) {
@@ -69,5 +78,10 @@ public class ProcessDataHolder {
 
 	public synchronized Collection<RankedPhoto> getRankedPhotos() {
 		return rankedPhotos;
+	}
+
+	public Queue<CommentedPhoto> getCommentedPhotos()
+	{
+		return commentedPhotos;
 	}
 }

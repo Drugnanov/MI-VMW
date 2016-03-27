@@ -5,10 +5,12 @@ import com.flickr4java.flickr.FlickrException;
 import com.flickr4java.flickr.photos.Photo;
 import com.flickr4java.flickr.photos.PhotoList;
 import com.flickr4java.flickr.photos.SearchParameters;
+import com.flickr4java.flickr.photos.comments.Comment;
 import com.flickr4java.flickr.test.TestInterface;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by Drugnanov on 18.11.2015.
@@ -37,5 +39,10 @@ public class FlickrService {
   public PhotoList<Photo> search(String text, int pageLimit, int pageOrder) throws FlickrException {
     searchParameters.setText(text);
     return flickr.getPhotosInterface().search(searchParameters, pageLimit, pageOrder);
+  }
+
+  public List<Comment> getComments(String photoId) throws FlickrException
+  {
+    return flickr.getCommentsInterface().getList(photoId);
   }
 }
