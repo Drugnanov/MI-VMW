@@ -67,6 +67,7 @@ public class FlickrDownloadProducent extends Thread {
         System.out.println("Something gets wrong during downloading photos.");
       }
     }
+    System.out.println("Number of downloaded photos: " + downloadedPhotos);
     tm.stop();
     pdh.noMoreUnrankedPhotos();
   }

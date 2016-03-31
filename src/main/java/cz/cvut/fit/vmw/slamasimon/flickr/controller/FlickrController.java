@@ -4,13 +4,12 @@ import com.flickr4java.flickr.FlickrException;
 import cz.cvut.fit.vmw.slamasimon.flickr.controller.model.ExecutionTime;
 import cz.cvut.fit.vmw.slamasimon.flickr.controller.model.SearchData;
 import cz.cvut.fit.vmw.slamasimon.flickr.controller.model.SentimentData;
-import cz.cvut.fit.vmw.slamasimon.flickr.model.CommentedPhoto;
+import cz.cvut.fit.vmw.slamasimon.flickr.controller.model.SentimentSearchData;
 import cz.cvut.fit.vmw.slamasimon.flickr.model.RankedPhoto;
 import cz.cvut.fit.vmw.slamasimon.flickr.service.PhotoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -25,7 +24,7 @@ import java.util.List;
 public class FlickrController {
 
   private final static String ROOT_NAVIGATION = "/flickr/search";
-  private final static String URL_SENTIMENT_FORM = "/flickr/sentiment/{keyword}/{photosCount}";
+  private final static String URL_SENTIMENT_FORM = "/flickr/sentiment";
   private final static String MODEL_SEARCH_DATA = "searchData";
   private final static String MODEL_FLICKR_TEST = "flickrTest";
   private final static String MODEL_SEARCH_RESULT_PHOTOS = "photos";
@@ -33,7 +32,7 @@ public class FlickrController {
   private final static String MODEL_SEARCH_FOUND_NUMBER = "photosFoundNumber";
   private final static String MODEL_SEARCH_ERRORS = "errors";
   private final static String MODEL_SEARCH_EXECUTION_TIME = "executionTimes";
-  private final static String MODEL_SENTIMENT = "sentiment";
+  private final static String MODEL_SENTIMENTS = "sentiments";
 
   @Autowired
   private PhotoService ps;
@@ -105,25 +104,39 @@ public class FlickrController {
     return errors;
   }
 
-
   @RequestMapping(value = {URL_SENTIMENT_FORM}, method = RequestMethod.GET)
-  public String getSentiment(ModelMap model, SearchData searchData, HttpServletRequest request, @PathVariable("keyword") String keyword, @PathVariable("photosCount") int photosCount)
+  public String getSentiment(ModelMap model, SentimentSearchData searchData, HttpServletRequest request)
           throws Exception {
+    return "sentiment";
+  }
+
+  @RequestMapping(value = {URL_SENTIMENT_FORM}, method = RequestMethod.POST)
+  public String postSentiment(ModelMap model, SentimentSearchData searchData, HttpServletRequest request)
+          throws Exception {
+    String keywordsString = searchData.getKeywords();
+    String[] keywords = keywordsString.split(",");
+    int photosCount = searchData.getNumOfPhotos();
+
+//    System.out.println("keyword: " + keyword);
+//    System.out.println("Photos count: " + photosCount);
 
     ExecutionTime tms = null;
-    int numberOfFound = 0;
     SentimentData sentiment = null;
     List<String> errors = new ArrayList<String>();
+    List<SentimentData> sentiments = new ArrayList<SentimentData>();
     try {
-      sentiment = ps.getSentiment(keyword, photosCount);
-      sentiment.setKeyword(keyword);
+      for (int i = 0; i < keywords.length; i++) {
+        sentiment = ps.getSentiment(keywords[i], photosCount);
+        sentiment.setKeyword(keywords[i]);
+        sentiments.add(sentiment);
+      }
       tms = ps.getExecutionTimes();
     } catch (Exception e) {
-      errors.add("Something goes wrong! " + e.getMessage() + ", e type:" + e.toString());
+      errors.add("Something went wrong! " + e.getMessage() + ", e type:" + e.toString());
     }
     model.addAttribute(MODEL_SEARCH_ERRORS, errors);
     model.addAttribute(MODEL_SEARCH_EXECUTION_TIME, tms);
-    model.addAttribute(MODEL_SENTIMENT, sentiment);
+    model.addAttribute(MODEL_SENTIMENTS, sentiments);
     return "sentiment";
   }
 

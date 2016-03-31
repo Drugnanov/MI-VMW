@@ -24,6 +24,7 @@ public class GateService
   private String homePath;
   private String pluginsPath;
   private String sentimentGrammarPath;
+  private SerialAnalyserController pipeline;
 
   public GateService(String homePath, String pluginsPath, String sentimentGrammarPath)
   {
@@ -53,13 +54,15 @@ public class GateService
       }
       register.registerDirectories(annieHome);
 
+      pipeline = createPipeline();
+
       isInitialized = true;
     }
   }
 
   private SerialAnalyserController createPipeline() throws GateException
   {
-    init();
+//    init();
     // (ProcessingResource) Factory.createResource("module-class-name");
     // below is a tip, how to find module class name
     // create an instance of a Document Reset processing resource
@@ -105,11 +108,13 @@ public class GateService
 
   public SentimentData computeSentiment(List<CommentedPhoto> photos) throws GateException
   {
+    init();
+    System.out.println("computeSentiment photos count: " + photos.size());
     if (photos.size() == 0) {
       return new SentimentData();
     }
 
-    SerialAnalyserController pipeline = createPipeline();
+//    SerialAnalyserController pipeline = createPipeline();
     Corpus corpus = Factory.newCorpus("");
 
     for (CommentedPhoto photo : photos) {
@@ -159,23 +164,23 @@ public class GateService
 
       ArrayList tokenAnnotations = new ArrayList(positiveAnnotations);
 
-      // looop through the Token annotations
-      for(int j = 0; j < tokenAnnotations.size(); ++j) {
-
-        // get a Token annotation
-        Annotation token = (Annotation)tokenAnnotations.get(j);
-
-        // get features of a Token
-        FeatureMap annFM = token.getFeatures();
-
-        // get the value of the "string" feature and print it in the console
-        String value = (String)annFM.get((Object)"string");
-        System.out.println(value);
-      }
+//      // looop through the Token annotations
+//      for(int j = 0; j < tokenAnnotations.size(); ++j) {
+//
+//        // get a Token annotation
+//        Annotation token = (Annotation)tokenAnnotations.get(j);
+//
+//        // get features of a Token
+//        FeatureMap annFM = token.getFeatures();
+//
+//        // get the value of the "string" feature and print it in the console
+//        String value = (String)annFM.get((Object)"string");
+//        System.out.println(value);
+//      }
     }
 
     double sentiment = (double)(positiveCount - negativeCount) / corpus.size();
-    SentimentData data = new SentimentData(sentiment, photos.size(), corpus.size(), positiveCount, negativeCount);
+    SentimentData data = new SentimentData(sentiment, photos.size(), corpus.size(), positiveCount, negativeCount, photos.get(0).getPhoto());
 
     return data;
   }

@@ -1,5 +1,7 @@
 package cz.cvut.fit.vmw.slamasimon.flickr.controller.model;
 
+import com.flickr4java.flickr.photos.Photo;
+
 /**
  * Created by simon.
  */
@@ -11,14 +13,16 @@ public class SentimentData
   private int commentsCount;
   private int positiveCount;
   private int negativeCount;
+  private Photo thumbnail;
 
-  public SentimentData(double sentiment, int photosCount, int commentsCount, int positiveCount, int negativeCount)
+  public SentimentData(double sentiment, int photosCount, int commentsCount, int positiveCount, int negativeCount, Photo thumbnail)
   {
     this.sentiment = sentiment;
     this.photosCount = photosCount;
     this.commentsCount = commentsCount;
     this.positiveCount = positiveCount;
     this.negativeCount = negativeCount;
+    this.thumbnail = thumbnail;
   }
 
   public SentimentData()
@@ -88,5 +92,15 @@ public class SentimentData
   public void setNegativeCount(int negativeCount)
   {
     this.negativeCount = negativeCount;
+  }
+
+  public Photo getThumbnail()
+  {
+    return thumbnail;
+  }
+
+  public void setThumbnail(Photo thumbnail)
+  {
+    this.thumbnail = thumbnail;
   }
 }
