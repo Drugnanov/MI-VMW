@@ -64,6 +64,7 @@ public class FlickrController {
       }
       catch (Exception e) {
         errors.add("Something goes wrong! " + e.getMessage() + " e type:" + e.toString());
+        e.printStackTrace();
       }
     }
     model.addAttribute(MODEL_SEARCH_FOUND_NUMBER, numberOfFound);

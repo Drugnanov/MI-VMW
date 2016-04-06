@@ -1,8 +1,7 @@
 package cz.cvut.fit.vmw.slamasimon.flickr.service.parallel;
 
 import com.flickr4java.flickr.FlickrException;
-import com.flickr4java.flickr.photos.Photo;
-import com.flickr4java.flickr.photos.PhotoList;
+import cz.cvut.fit.vmw.slamasimon.flickr.model.FlikrPhoto;
 import cz.cvut.fit.vmw.slamasimon.flickr.service.FlickrService;
 import cz.cvut.fit.vmw.slamasimon.flickr.util.TimeMeasure;
 
@@ -43,17 +42,17 @@ public class FlickrDownloadProducent extends Thread {
         photosToAccept = photosLimit - (i-1) * pageLimit;
       }
       try {
-        PhotoList<Photo> photosList = flickrService.search(text, pageLimit, i);
+        List<FlikrPhoto> photosList = flickrService.searchWithComments(text, pageLimit, i);
         if (photosToAccept == pageLimit){
           pdh.putUnrankedPhotos(photosList);
           downloadedPhotos += photosList.size();
           //debug
-          for (Photo p : photosList) {
+          for (FlikrPhoto p : photosList) {
             checkPhoto(p, photosId);
           }
         }
         else {
-          for (Photo p : photosList) {
+          for (FlikrPhoto p : photosList) {
             pdh.putUnrankedPhotos(p);
             downloadedPhotos++;
             checkPhoto(p, photosId);
@@ -71,12 +70,12 @@ public class FlickrDownloadProducent extends Thread {
     pdh.noMoreUnrankedPhotos();
   }
 
-  private void checkPhoto(Photo p, List<String> photosId) {
-    if (photosId.contains(p.getId())) {
-      System.out.println("ERROR photos with id " + p.getId() + " was downloaded previously!!");
+  private void checkPhoto(FlikrPhoto p, List<String> photosId) {
+    if (photosId.contains(p.getPhoto().getId())) {
+      System.out.println("ERROR photos with id " + p.getPhoto().getId() + " was downloaded previously!!");
     }
     else {
-      photosId.add(p.getId());
+      photosId.add(p.getPhoto().getId());
     }
   }
 

@@ -25,12 +25,14 @@ import java.util.List;
 public class PhotoService {
 
   private FlickrService flickrService;
+  private GateService gateService;
   private int flickrPageSice;
   private TimeMeasures timeTracks = new TimeMeasures();
 
-  public PhotoService(FlickrService flickrService, int flickrPageSize) {
+  public PhotoService(FlickrService flickrService, int flickrPageSize, GateService gateService) {
     this.flickrService = flickrService;
     this.flickrPageSice = flickrPageSize;
+    this.gateService = gateService;
   }
 
   public boolean checkFlickr() {
@@ -58,7 +60,7 @@ public class PhotoService {
     ProcessDataHolder pdh = new ProcessDataHolder();
 
     FlickrDownloadProducent producer = new FlickrDownloadProducent(pdh, flickrService, text, count, flickrPageSice);
-    FlickrDownloadConsument consumer = new FlickrDownloadConsument(pdh, new Ranker(new StringComparator(), new GeoComparator()), userValues);
+    FlickrDownloadConsument consumer = new FlickrDownloadConsument(pdh, new Ranker(new StringComparator(), new GeoComparator()), gateService, userValues);
     producer.run();
     consumer.run();
 

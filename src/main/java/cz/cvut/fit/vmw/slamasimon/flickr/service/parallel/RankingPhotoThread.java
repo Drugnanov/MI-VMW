@@ -1,22 +1,26 @@
 package cz.cvut.fit.vmw.slamasimon.flickr.service.parallel;
 
-import com.flickr4java.flickr.photos.Photo;
+import cz.cvut.fit.vmw.slamasimon.flickr.model.FlikrPhoto;
 import cz.cvut.fit.vmw.slamasimon.flickr.model.RankedPhoto;
+import cz.cvut.fit.vmw.slamasimon.flickr.model.SentimentInfo;
 import cz.cvut.fit.vmw.slamasimon.flickr.ranking.Ranker;
 import cz.cvut.fit.vmw.slamasimon.flickr.ranking.UserValues;
+import cz.cvut.fit.vmw.slamasimon.flickr.service.GateService;
 import cz.cvut.fit.vmw.slamasimon.flickr.util.TimeMeasure;
 
 public class RankingPhotoThread extends Thread {
 
-  private Photo photo;
+  private FlikrPhoto photo;
   private Ranker ranker;
+  private GateService gateService;
   private UserValues values;
   private ProcessDataHolder pdh;
   private TimeMeasure tm;
 
-  public RankingPhotoThread(Photo photo, Ranker ranker, UserValues values, ProcessDataHolder pdh) {
+  public RankingPhotoThread(FlikrPhoto photo, Ranker ranker, GateService gateService, UserValues values, ProcessDataHolder pdh) {
     this.photo = photo;
     this.ranker = ranker;
+    this.gateService = gateService;
     this.values = values;
     this.pdh = pdh;
   }
@@ -26,7 +30,9 @@ public class RankingPhotoThread extends Thread {
     RankedPhoto rankedPhoto = null;
     tm = new TimeMeasure();
     try {
+      SentimentInfo sentimentInfo = gateService.computeSentiment(photo);
       rankedPhoto = ranker.rank(photo, values);
+      rankedPhoto.setSentimentInfo(sentimentInfo);
     }
     catch (Exception ex) {
       System.out.println("Something went wrong.");

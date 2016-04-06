@@ -30,7 +30,7 @@ public class TestQueue extends AbstractJUnit4SpringContextTests {
     List<RankedPhoto> photoList = photoService.search(sd);
     System.out.println("test");
     for (RankedPhoto photoRanked : photoList) {
-      System.out.println(photoRanked.photo.getTitle());
+      System.out.println(photoRanked.photo.getPhoto().getTitle());
     }
   }
 }

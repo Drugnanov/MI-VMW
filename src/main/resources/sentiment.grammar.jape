@@ -1,0 +1,20 @@
+Phase: MatchingStyles
+Input: Lookup
+Options: control = brill
+
+
+Rule: PositiveRule
+Priority: 100
+(
+ {Lookup.majorType == positive}
+):Positive
+-->
+:Positive.Positive = {rule=PositiveRule}
+
+Rule: NegativeRule
+Priority: 100
+(
+ {Lookup.majorType == negative}
+):Negative
+-->
+:Negative.Negative = {rule=NegativeRule}

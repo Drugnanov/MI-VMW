@@ -1,6 +1,6 @@
 package cz.cvut.fit.vmw.slamasimon.flickr.service.parallel;
 
-import com.flickr4java.flickr.photos.Photo;
+import cz.cvut.fit.vmw.slamasimon.flickr.model.FlikrPhoto;
 import cz.cvut.fit.vmw.slamasimon.flickr.model.RankedPhoto;
 
 import java.util.Collection;
@@ -9,17 +9,17 @@ import java.util.Queue;
 
 public class ProcessDataHolder {
 
-	private Queue<Photo> unrankedPhotos;
+	private Queue<FlikrPhoto> unrankedPhotos;
 	private Queue<RankedPhoto> rankedPhotos;
 	private int unrankedOut = 0;
 	private boolean producingUnrankedPhotos = true;
 
 	public ProcessDataHolder() {
-		this.unrankedPhotos = new LinkedList<Photo>();
+		this.unrankedPhotos = new LinkedList<FlikrPhoto>();
 		this.rankedPhotos = new LinkedList<RankedPhoto>();
 	}
 
-	public synchronized Photo getNextUnrankedPhoto() {
+	public synchronized FlikrPhoto getNextUnrankedPhoto() {
 		while (unrankedPhotos.isEmpty() || unrankedOut > 400) {
 			try {
 				wait();
@@ -28,17 +28,17 @@ public class ProcessDataHolder {
 			}
 		}
 		unrankedOut++;
-		Photo photo = unrankedPhotos.poll();
+		FlikrPhoto photo = unrankedPhotos.poll();
 		notifyAll();
 		return photo;
 	}
 
-	public synchronized void putUnrankedPhotos(Collection<Photo> photos) {
+	public synchronized void putUnrankedPhotos(Collection<FlikrPhoto> photos) {
 		unrankedPhotos.addAll(photos);
 		notifyAll();
 	}
 
-	public synchronized void putUnrankedPhotos(Photo p) {
+	public synchronized void putUnrankedPhotos(FlikrPhoto p) {
 		unrankedPhotos.add(p);
 		notifyAll();
 	}

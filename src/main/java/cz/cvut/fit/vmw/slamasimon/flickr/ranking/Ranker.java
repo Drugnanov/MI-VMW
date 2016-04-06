@@ -1,7 +1,7 @@
 package cz.cvut.fit.vmw.slamasimon.flickr.ranking;
 
 import com.flickr4java.flickr.photos.GeoData;
-import com.flickr4java.flickr.photos.Photo;
+import cz.cvut.fit.vmw.slamasimon.flickr.model.FlikrPhoto;
 import cz.cvut.fit.vmw.slamasimon.flickr.model.RankedPhoto;
 
 import java.util.Date;
@@ -26,21 +26,21 @@ public class Ranker
 
   }
 
-  public RankedPhoto rank(Photo photo, UserValues filters)
+  public RankedPhoto rank(FlikrPhoto photo, UserValues filters)
   {
     System.out.println("ranking started");
     double[] scores = new double[4];
     double rank = 0;
     try {
       System.out.printf("First");
-      scores[0] = getStringDistance(photo.getDescription(), filters.getDescription())* filters.getDescriptionWeight();
+      scores[0] = getStringDistance(photo.getPhoto().getDescription(), filters.getDescription())* filters.getDescriptionWeight();
       System.out.println("Second");
-      scores[1] = getGeoDistance(photo.getGeoData(), filters.getGeoData()) * filters.getGeoWeight();
+      scores[1] = getGeoDistance(photo.getPhoto().getGeoData(), filters.getGeoData()) * filters.getGeoWeight();
 
       System.out.println("Third");
-      scores[2] = getIntDistance( photo.getViews(), filters.getViewsCount()) * filters.getViewsCountWeight();
+      scores[2] = getIntDistance( photo.getPhoto().getViews(), filters.getViewsCount()) * filters.getViewsCountWeight();
       System.out.printf("Four");
-      scores[3] = getDateDistance(photo.getDateTaken(), filters.getCreatedAt()) * filters.getCreatedAtWeight();
+      scores[3] = getDateDistance(photo.getPhoto().getDateTaken(), filters.getCreatedAt()) * filters.getCreatedAtWeight();
       System.out.println("Five");
 
 //      for (int i = 0; i < scores.length; i++) {

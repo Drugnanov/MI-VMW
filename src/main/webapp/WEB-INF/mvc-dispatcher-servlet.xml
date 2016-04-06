@@ -48,7 +48,14 @@
 
   <bean id="photoService" class="cz.cvut.fit.vmw.slamasimon.flickr.service.PhotoService">
     <constructor-arg name="flickrService" ref="flickrApi"/>
+    <constructor-arg name="gateService" ref="gateService"/>
     <constructor-arg name="flickrPageSize" value="${cz.vmw.flickr.api.page.size}"/>
+  </bean>
+
+  <bean id="gateService" class="cz.cvut.fit.vmw.slamasimon.flickr.service.GateService">
+    <constructor-arg name="homePath" value="${cz.vmw.gate.home}"/>
+    <constructor-arg name="pluginsPath" value="${cz.vmw.gate.plugins}"/>
+    <constructor-arg name="sentimentGrammarPath" value="${cz.vmw.gate.jade.grammar.sentiment}"/>
   </bean>
 
 </beans>

@@ -15,20 +15,21 @@
     <div class="results span9 pull-right">
       <c:forEach var="photo" items="${photos}">
         <div class="pull-left photo">
-          <a href="http://farm${photo.photo.farm}.staticflickr.com/${photo.photo.server}/${photo.photo.id}_${photo.photo.secret}_c.jpg"><img
+          <a href="http://farm${photo.photo.photo.farm}.staticflickr.com/${photo.photo.photo.server}/${photo.photo.photo.id}_${photo.photo.photo.secret}_c.jpg"><img
               <%--width="150"--%>
               <%--height="150"--%>
-              src="http://farm${photo.photo.farm}.staticflickr.com/${photo.photo.server}/${photo.photo.id}_${photo.photo.secret}_q.jpg"
+              src="http://farm${photo.photo.photo.farm}.staticflickr.com/${photo.photo.photo.server}/${photo.photo.photo.id}_${photo.photo.photo.secret}_q.jpg"
               class="pic-thumbnail"
               style="opacity: 0"/>
           </a><br/>
             <div class="photo-description">
               <p><fmt:formatNumber value="${photo.rank}" maxFractionDigits="2" minFractionDigits="2"/></p>
-              <strong>GEO:</strong> <c:if test="${photo.photo.geoData.latitude != null}">${photo.photo.geoData.latitude}/${photo.photo.geoData.longitude}</c:if><c:if test="${photo.photo.geoData.latitude == null}">-</c:if><br/>
+              <strong>Sentiment: </strong>${photo.sentimentInfo.sentiment} (comments: ${photo.sentimentInfo.commentsCount})<br/>
+              <strong>GEO:</strong> <c:if test="${photo.photo.photo.geoData.latitude != null}">${photo.photo.photo.geoData.latitude}/${photo.photo.photo.geoData.longitude}</c:if><c:if test="${photo.photo.photo.geoData.latitude == null}">-</c:if><br/>
               <%--<strong <c:if test="${fn:length(photo.photo.description) > 40}">data-toggle="tooltip" data-placement="left" title="${fn:escapeXml(photo.photo.description)}"</c:if>>--%>
-              <strong>Description:</strong> ${fn:escapeXml(fn:substring(photo.photo.description, 0, 40))}${fn:length(photo.photo.description) > 40 ? '...' : ''} <small>(${fn:length(photo.photo.description)}&nbsp;chars)</small><br/>
-              <strong>Views:</strong> ${photo.photo.views}<br/>
-              <strong>Date:</strong> <fmt:formatDate value="${photo.photo.dateTaken}" type="date"/><br/>
+              <strong>Description:</strong> ${fn:escapeXml(fn:substring(photo.photo.photo.description, 0, 40))}${fn:length(photo.photo.photo.description) > 40 ? '...' : ''} <small>(${fn:length(photo.photo.photo.description)}&nbsp;chars)</small><br/>
+              <strong>Views:</strong> ${photo.photo.photo.views}<br/>
+              <strong>Date:</strong> <fmt:formatDate value="${photo.photo.photo.dateTaken}" type="date"/><br/>
             </div>
         </div>
       </c:forEach>

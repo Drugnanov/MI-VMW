@@ -42,7 +42,10 @@ public class TimeMeasures {
   public ExecutionTime getExecutionTimes() {
     ExecutionTime et = new ExecutionTime();
     et.setExecutionTime(searchTime.getDuration());
-    long downloadTimePerPhoto = downloadTime.getDuration() / this.downloadedPhotosCount;
+    long downloadTimePerPhoto = 0;
+    if (this.downloadedPhotosCount > 0) {
+      downloadTimePerPhoto = downloadTime.getDuration() / this.downloadedPhotosCount;
+    }
     et.setDownloadTime(downloadTimePerPhoto);
     Long rerankingTimePerPhoto = 0L;
     for (TimeMeasure tm : rerankingTimes) {
